@@ -1,4 +1,30 @@
 {% extends 'base.html' %} {% set active = "About" %} {% block content %}
-<h1>About</h1>
-<p>Welcome to the about page!</p>
+<h1 class="m-4">About</h1>
+
+<div class="about-container">
+  <div class="about-image">
+    <img
+      style="max-width: 60%; max-height: 60%; float: left"
+      src="{{ url_for('static', filename='img/about-pigeon1.jpg') }}"
+    />
+  </div>
+  <div class="about-text ml-5">
+    <p>
+      Pigeon racing, a captivating sport, involves homing pigeons racing over
+      long distances to their lofts. Enthusiasts, known as pigeon fanciers,
+      carefully breed and train pigeons for their homing instincts and speed.
+      Equipped with electronic timing devices, races cover significant
+      distances, with participants eagerly celebrating the fastest birds upon
+      their return.
+    </p>
+    <p>
+      The sport's rich history dates back centuries, with roots in ancient
+      civilizations like Egypt and Greece, where pigeons were revered for their
+      homing abilities. Evolving into an organized sport in the mid-19th
+      century, pigeon racing gained international popularity. Today, it
+      continues as a blend of tradition, competition, and camaraderie,
+      preserving the remarkable connection between these birds and humanity.
+    </p>
+  </div>
+</div>
 {% endblock %}
