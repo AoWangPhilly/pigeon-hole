@@ -1,16 +1,14 @@
-from sqlalchemy import Column, Integer, String
-from database import Base, db_session
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
-class User(Base):
+class User(db.Model):
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True)
-    email = Column(String(120), unique=True)
+    _id = db.Column("id", db.Integer, primary_key=True)
+    email = db.Column("email", db.String(100), unique=True, nullable=False)
+    password = db.Column("password", db.String(100), nullable=False)
+    name = db.Column("name", db.String(100), nullable=False)
 
-    def __init__(self, name=None, email=None):
-        self.name = name
-        self.email = email
-
-    def __repr__(self):
-        return f"<User {self.name!r}>"
+    def __str__(self) -> str:
+        return f"<User: {self.email} | Name: {self.name}>"

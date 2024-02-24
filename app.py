@@ -1,13 +1,23 @@
-# app.py
-from flask import Flask
+import os
+
+from flask import Flask, session
+
 from api.home_bp import home_bp
 from api.about_bp import about_bp
 from api.auth_bp import auth_bp
-from database import init_db
+from models import db, User
 
 app = Flask(__name__)
 
-init_db()
+app.secret_key = os.environ.get("SECRET_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///pigeon-hole.db"
+
+app.app_context().push()
+
+db.init_app(app)
+db.create_all()
+
+
 app.register_blueprint(home_bp, url_prefix="/")
 app.register_blueprint(about_bp, url_prefix="/about")
 app.register_blueprint(auth_bp, url_prefix="/auth")

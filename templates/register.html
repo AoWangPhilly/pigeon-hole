@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% set active = "Register" %} {% block content %}
+<section class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 650px">
+        <h1 class="card-title mb-4 text-center">Register</h1>
+        <p class="text-center">Join our community by creating an account.</p>
+        <form>
+            <div class="row mb-3">
+                <label for="inputFirstName" class="col-sm-2 col-form-label"
+                    >First Name</label
+                >
+                <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="inputFirstName"
+                        placeholder="First Name"
+                    />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputLastName" class="col-sm-2 col-form-label"
+                    >Last Name</label
+                >
+                <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="inputLastName"
+                        placeholder="Last Name"
+                    />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputEmail4" class="col-sm-2 col-form-label"
+                    >Email</label
+                >
+                <div class="col-sm-10">
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="inputEmail4"
+                        placeholder="Email"
+                    />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputPassword4" class="col-sm-2 col-form-label"
+                    >Password</label
+                >
+                <div class="col-sm-10">
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="inputPassword4"
+                        placeholder="Password"
+                    />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary">
+                        Register
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="mt-4 text-center">
+            Already have an account?
+            <a href="/auth/login" class="link-primary">Login Here</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
