@@ -25,7 +25,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse" id="navbarNav">
-                {% if logged_in == True %}
+                {% if session["user"] %}
                 <ul class="navbar-nav auto">
                     <li
                         class="nav-item{% if active == 'Home' %} active{% endif %}"
@@ -43,9 +43,8 @@
                     <li
                         class="nav-item{% if active == 'Sign Out' %} active{% endif %}"
                     >
-                        <a class="nav-link" href="/auth/signout">Sign Out</a>
+                        <a class="nav-link" href="/auth/logout">Sign Out</a>
                     </li>
-                    <!-- Add more navigation items as needed -->
                 </ul>
                 {% else %}
                 <ul class="navbar-nav auto">

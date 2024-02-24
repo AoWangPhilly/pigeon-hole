@@ -3,7 +3,10 @@
     <div class="card p-4 shadow-sm" style="width: 100%; max-width: 650px">
         <h1 class="card-title mb-4 text-center">Login</h1>
         <p class="text-center">Welcome back! Please login to your account.</p>
-        <form>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+        <form method="POST" action="/auth/login">
             <div class="row mb-3">
                 <label for="inputEmail" class="col-sm-2 col-form-label"
                     >Email</label
@@ -14,7 +17,9 @@
                         class="form-control"
                         id="inputEmail"
                         placeholder="Email"
+                        name="email"
                         aria-describedby="emailHelp"
+                        required
                     />
                 </div>
             </div>
@@ -27,7 +32,9 @@
                         type="password"
                         class="form-control"
                         id="inputPassword"
+                        name="password"
                         placeholder="Password"
+                        required
                     />
                 </div>
             </div>

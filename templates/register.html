@@ -3,8 +3,13 @@
     <div class="card p-4 shadow" style="width: 100%; max-width: 650px">
         <h1 class="card-title mb-4 text-center">Register</h1>
         <p class="text-center">Join our community by creating an account.</p>
-        <form>
-            <div class="row mb-3">
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/auth/register">
+            <div class="form-group row mb-3">
                 <label for="inputFirstName" class="col-sm-2 col-form-label"
                     >First Name</label
                 >
@@ -13,11 +18,13 @@
                         type="text"
                         class="form-control"
                         id="inputFirstName"
+                        name="first_name"
                         placeholder="First Name"
+                        required
                     />
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="form-group row mb-3">
                 <label for="inputLastName" class="col-sm-2 col-form-label"
                     >Last Name</label
                 >
@@ -26,11 +33,13 @@
                         type="text"
                         class="form-control"
                         id="inputLastName"
+                        name="last_name"
                         placeholder="Last Name"
+                        required
                     />
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="form-group row mb-3">
                 <label for="inputEmail4" class="col-sm-2 col-form-label"
                     >Email</label
                 >
@@ -39,11 +48,13 @@
                         type="email"
                         class="form-control"
                         id="inputEmail4"
+                        name="email"
                         placeholder="Email"
+                        required
                     />
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="form-group row mb-3">
                 <label for="inputPassword4" class="col-sm-2 col-form-label"
                     >Password</label
                 >
@@ -52,7 +63,9 @@
                         type="password"
                         class="form-control"
                         id="inputPassword4"
+                        name="password"
                         placeholder="Password"
+                        required
                     />
                 </div>
             </div>

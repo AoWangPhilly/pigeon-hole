@@ -9,14 +9,13 @@ from models import db, User
 
 app = Flask(__name__)
 
-app.secret_key = os.environ.get("SECRET_KEY")
+app.secret_key = "super secret key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///pigeon-hole.db"
 
 app.app_context().push()
 
 db.init_app(app)
 db.create_all()
-
 
 app.register_blueprint(home_bp, url_prefix="/")
 app.register_blueprint(about_bp, url_prefix="/about")
