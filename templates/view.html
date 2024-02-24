@@ -1,5 +1,19 @@
-{% extends 'base.html' %} {% set active = "Home" %} {% block content %}
+{% extends 'base.html' %} {% set active = "View" %} {% block content %}
 <div class="mt-5 text-center">
-    <h1 class="display-1 mb-4">Pigeon Hole</h1>
+    <h3 class="font-weight-light text-muted mb-5">
+        Hmmm... It seems that there are no pigeons to display.
+    </h3>
+    <img
+        src="{{ url_for('static', filename='img/no-pigeons.webp') }}"
+        style="width: 35%; height: auto"
+    />
+    <div class="pt-5">
+        <button
+            class="btn btn-secondary"
+            onclick="window.location.href='/pigeon/add'"
+        >
+            Add a pigeon
+        </button>
+    </div>
 </div>
 {% endblock %}

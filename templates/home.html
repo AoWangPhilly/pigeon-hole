@@ -1,32 +1,22 @@
 {% extends 'base.html' %} {% set active = "Home" %} {% block content %}
 <div class="mt-5 text-center">
     <h1 class="display-1 mb-4">Pigeon Hole</h1>
-    <h3 class="font-weight-light text-muted mb-5">
-        Streamlined Racing Pigeon Management with Detailed Pedigrees and
-        Achievements
-    </h3>
+    {% if session["user"] %}
+    <h3 class="font-weight mb-4">
+        Welcome back, {{ session["user"]["name"] }}!
+        {% endif %}
+        <h3 class="font-weight-light text-muted mb-5">
+            Streamlined Racing Pigeon Management with Detailed Pedigrees and
+            Achievements
+        </h3>
 
-    <div
-        class="d-flex justify-content-between align-items-center mt-5 flex-wrap"
-    >
-        <img
-            src="static/img/home-pigeon1.jpg"
-            alt="Image 1"
-            class="img-fluid"
-            style="width: 30%; margin-bottom: 30px"
-        />
-        <img
-            src="static/img/home-pigeon2.jpg"
-            alt="Image 2"
-            class="img-fluid"
-            style="width: 30%; margin-bottom: 30px"
-        />
-        <img
-            src="static/img/home-pigeon3.jpg"
-            alt="Image 3"
-            class="img-fluid"
-            style="width: 30%; margin-bottom: 30px"
-        />
-    </div>
+        <div class="d-flex justify-content-between align-items-center mt-5 flex-wrap">
+            <img src="static/img/home-pigeon1.jpg" alt="Image 1" class="img-fluid"
+                style="width: 30%; margin-bottom: 30px" />
+            <img src="static/img/home-pigeon2.jpg" alt="Image 2" class="img-fluid"
+                style="width: 30%; margin-bottom: 30px" />
+            <img src="static/img/home-pigeon3.jpg" alt="Image 3" class="img-fluid"
+                style="width: 30%; margin-bottom: 30px" />
+        </div>
 </div>
 {% endblock %}

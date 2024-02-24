@@ -1,0 +1,116 @@
+{% extends 'base.html' %} {% set active = "Register" %} {% block content %}
+<section class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 450px">
+        <h1 class="card-title mb-4 text-center">Add Pigeon</h1>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="bandId">Band ID</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="bandId"
+                        placeholder="Band ID"
+                        required
+                    />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputName2">Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="inputName2"
+                        placeholder="Name"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Sex</label>
+                    <div class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            name="sex"
+                            id="gridRadios1"
+                            value="cock"
+                            checked
+                        />
+                        <label class="form-check-label" for="gridRadios1"
+                            >Cock</label
+                        >
+                    </div>
+                    <div class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            name="sex"
+                            id="gridRadios2"
+                            value="hen"
+                        />
+                        <label class="form-check-label" for="gridRadios2"
+                            >Hen</label
+                        >
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inlineFormCustomSelect">Color</label>
+                    <select
+                        class="custom-select mr-sm-2"
+                        id="inlineFormCustomSelect"
+                    >
+                        <option selected>Choose color</option>
+                        <option value="blue">Blue</option>
+                        <option value="black">Black</option>
+                        <option value="red">Red</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="white">White</option>
+                        <option value="checker">Checker</option>
+                        <option value="barred">Barred</option>
+                        <option value="pied">Pied</option>
+                        <option value="grizzle">Grizzle</option>
+                        <option value="t-pattern">T-pattern</option>
+                        <option value="dun">Dun</option>
+                        <option value="mealy">Mealy</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <div>
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                    />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="avatar" class="form-label">Upload Image</label>
+                <input
+                    type="file"
+                    id="avatar"
+                    name="avatar"
+                    accept="image/png, image/jpeg"
+                />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add</button>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="window.location.href='/pigeon/view'"
+            >
+                Cancel
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
