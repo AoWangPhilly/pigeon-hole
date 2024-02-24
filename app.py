@@ -14,7 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 
 app.secret_key = str(os.getenv("SECRET_KEY"))
-app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL"))
+app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL")).replace('postgres://', 'postgresql://')
 
 app.app_context().push()
 
