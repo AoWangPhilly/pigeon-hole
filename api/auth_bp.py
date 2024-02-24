@@ -1,4 +1,13 @@
-from flask import Blueprint, render_template, session, redirect, request, jsonify, url_for, flash
+from flask import (
+    Blueprint,
+    render_template,
+    session,
+    redirect,
+    request,
+    jsonify,
+    url_for,
+    flash,
+)
 
 from models import User, db
 
@@ -16,7 +25,12 @@ def logout():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
-        return render_template("register.html",), 200
+        return (
+            render_template(
+                "register.html",
+            ),
+            200,
+        )
 
     first_name = request.form.get("first_name")
     last_name = request.form.get("last_name")
@@ -26,10 +40,15 @@ def register():
         return render_template("register.html", error="All fields are required"), 400
 
     if db.session.query(User).filter_by(email=email).first() is not None:
-        return render_template("register.html", error="Email address already in use"), 400
+        return (
+            render_template("register.html", error="Email address already in use"),
+            400,
+        )
 
     encrypted_password = pbkdf2_sha256.hash(password)
-    user = User(email=email, password=encrypted_password, name=f"{first_name} {last_name}")
+    user = User(
+        email=email, password=encrypted_password, name=f"{first_name} {last_name}"
+    )
     db.session.add(user)
     db.session.commit()
 
@@ -57,7 +76,7 @@ def login():
         return render_template("login.html", error="Invalid password"), 400
 
     session["user"] = user
-    return redirect("/"),301
+    return redirect("/"), 301
 
 
 @auth_bp.route("/get-user")
