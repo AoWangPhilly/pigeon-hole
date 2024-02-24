@@ -36,6 +36,7 @@ def register():
     last_name = request.form.get("last_name")
     email = request.form.get("email")
     password = request.form.get("password")
+
     if not all((first_name, last_name, email, password)):
         return render_template("register.html", error="All fields are required"), 400
 

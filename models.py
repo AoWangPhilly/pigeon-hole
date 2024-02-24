@@ -19,3 +19,16 @@ class User(db.Model):
 
     def __str__(self) -> str:
         return f"<User: {self.email} | Name: {self.name}>"
+
+@dataclass
+class Pigeon(db.Model):
+    __tablename__ = "pigeons"
+    _id = db.Column("id", db.Integer, primary_key=True)
+    name = db.Column("name", db.String(100), nullable=False)
+    color = db.Column("color", db.String(100), nullable=False)
+    birthday = db.Column("birthday", db.String(100), nullable=False)
+    sex = db.Column("sex", db.Boolean, nullable=False)
+
+# @dataclass
+# class PigeonHierarchy(db.Model):
+#     __tablename__ = "pigeon_hierarchy"
