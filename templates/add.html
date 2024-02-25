@@ -7,7 +7,7 @@
         <div class="alert alert-danger" role="alert">{{ error }}</div>
         {% endif %}
 
-        <form method="post">
+        <form method="post" action="/pigeon/add" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="bandId">Band ID</label>
@@ -15,6 +15,7 @@
                         type="text"
                         class="form-control"
                         id="bandId"
+                        name="bandID"
                         placeholder="Band ID"
                         required
                     />
@@ -26,6 +27,7 @@
                         class="form-control"
                         id="inputName2"
                         placeholder="Name"
+                        name="name"
                         required
                     />
                 </div>
@@ -64,6 +66,7 @@
                     <select
                         class="custom-select mr-sm-2"
                         id="inlineFormCustomSelect"
+                        name="color"
                     >
                         <option selected>Choose color</option>
                         <option value="blue">Blue</option>
@@ -96,8 +99,8 @@
                 <label for="avatar" class="form-label">Upload Image</label>
                 <input
                     type="file"
-                    id="avatar"
-                    name="avatar"
+                    id="image"
+                    name="image"
                     accept="image/png, image/jpeg"
                 />
             </div>

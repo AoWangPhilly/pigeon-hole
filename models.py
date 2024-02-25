@@ -22,12 +22,23 @@ class User(db.Model):
 
 @dataclass
 class Pigeon(db.Model):
+    _id: int
+    band_id: str
+    name: str
+    sex: str
+    color: str
+    date_of_birth: str
+    image_url: str
+
     __tablename__ = "pigeons"
     _id = db.Column("id", db.Integer, primary_key=True)
+    band_id = db.Column("band_id", db.String(100), unique=True, nullable=False)
     name = db.Column("name", db.String(100), nullable=False)
+    sex = db.Column("sex", db.String(50), nullable=False)
     color = db.Column("color", db.String(100), nullable=False)
-    birthday = db.Column("birthday", db.String(100), nullable=False)
-    sex = db.Column("sex", db.Boolean, nullable=False)
+    date_of_birth = db.Column("date_of_birth", db.String(100), nullable=False)
+    image_url = db.Column("image_url", db.String(100), nullable=False)
+
 
 # @dataclass
 # class PigeonHierarchy(db.Model):

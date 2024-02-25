@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for, flash
 
 pigeon_bp = Blueprint(
     "pigeon",
@@ -14,3 +14,6 @@ def view():
 def add():
     if request.method == "GET":
         return render_template("add.html")
+    print(request.files)
+
+    return redirect(url_for("pigeon.view"))
