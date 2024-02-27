@@ -1,19 +1,97 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for, flash
+import os
+from typing import Final, Dict, Any
+from mimetypes import guess_type
+from io import BytesIO
+import uuid
+
+import requests
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    jsonify,
+    redirect,
+    url_for,
+    session,
+)
+
+from models import db, Pigeon
 
 pigeon_bp = Blueprint(
     "pigeon",
     __name__,
 )
 
+VERCEL_API_URL: Final[str] = "https://blob.vercel-storage.com"
+
+
+def save_image_to_blob_storage(
+    image_data: bytes, file_name: str, blob_file_name: str
+) -> Dict[str, Any]:
+    headers = {
+        "authorization": f"Bearer {os.environ.get('BLOB_READ_WRITE_TOKEN')}",
+        "x-content-type": guess_type(file_name)[0],
+    }
+
+    response = requests.put(
+        f"{VERCEL_API_URL}/{blob_file_name}", data=image_data, headers=headers
+    ).json()
+    return response
+
+
+def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
+    headers = {
+        "authorization": f"Bearer {os.environ.get('BLOB_READ_WRITE_TOKEN')}",
+        "prefix": blob_file_name,
+    }
+    response = requests.get(VERCEL_API_URL, headers=headers).json()
+    return response
+
 
 @pigeon_bp.route("/view")
 def view():
     return render_template("view.html")
 
+
 @pigeon_bp.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "GET":
         return render_template("add.html")
-    print(request.files)
+
+    user_id = session.get("user").get("_id")
+    band_id = request.form.get("bandID")
+    name = request.form.get("name")
+    sex = request.form.get("sex")
+    color = request.form.get("color")
+    date_of_birth = request.form.get("dateOfBirth")
+    image_data = request.files["image"]
+
+    # print all data
+    print(
+        f"User ID: {user_id}\n"
+        f"Band ID: {band_id}\n"
+        f"Name: {name}\n"
+        f"Sex: {sex}\n"
+        f"Color: {color}\n"
+        f"Date of Birth: {date_of_birth}\n"
+        # f"Image Data: {image_data.read()}\n"
+    )
+    blob_storage_response = save_image_to_blob_storage(
+        image_data=image_data.read(),
+        file_name=image_data.filename,
+        blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
+    )
+    url = blob_storage_response.get("url")
+    pigeon = Pigeon(
+        user_id=user_id,
+        band_id=band_id,
+        name=name,
+        sex=sex,
+        color=color,
+        date_of_birth=date_of_birth,
+        image_url=url,
+    )
+    db.session.add(pigeon)
+    db.session.commit()
 
     return redirect(url_for("pigeon.view"))
