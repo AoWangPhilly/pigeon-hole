@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% set active = "View" %} {% block content %}
+<div class="mt-5 text-center">
+    <h2 class="mb-5">Pigeon Hole</h2>
+    {% if pigeon %}
+    <div class="card mb-3" style="max-width: 540px">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img
+                    src="{{ pigeon.image_url }}"
+                    class="card-img"
+                    alt="{{ pigeon.name }}"
+                />
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pigeon.name }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted"
+                            >Band ID: {{ pigeon.band_id }}</small
+                        >
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted"
+                            >Color: {{ pigeon.color }}</small
+                        >
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">Sex: {{ pigeon.sex }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button
+        class="btn btn-secondary"
+        onclick="window.location.href='/pigeon/view'"
+    >
+        Back
+    </button>
+    {% endif %}
+</div>
+{% endblock %}

@@ -87,3 +87,9 @@ def add():
     db.session.commit()
 
     return redirect(url_for("pigeon.view"))
+
+
+@pigeon_bp.route("/<id>")
+def detail(id):
+    pigeon = Pigeon.query.filter_by(_id=id).first()
+    return render_template("detail.html", pigeon=pigeon)
