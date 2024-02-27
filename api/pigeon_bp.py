@@ -50,8 +50,8 @@ def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
 
 @pigeon_bp.route("/view")
 def view():
-    pigeons = db.session.query(Pigeon).all()
-    print(pigeons)
+    # filter for user only
+    pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id")).all()
     return render_template("view.html", pigeons=pigeons)
 
 
