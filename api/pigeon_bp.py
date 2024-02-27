@@ -66,16 +66,6 @@ def add():
     date_of_birth = request.form.get("dateOfBirth")
     image_data = request.files["image"]
 
-    # print all data
-    print(
-        f"User ID: {user_id}\n"
-        f"Band ID: {band_id}\n"
-        f"Name: {name}\n"
-        f"Sex: {sex}\n"
-        f"Color: {color}\n"
-        f"Date of Birth: {date_of_birth}\n"
-        # f"Image Data: {image_data.read()}\n"
-    )
     blob_storage_response = save_image_to_blob_storage(
         image_data=image_data.read(),
         file_name=image_data.filename,
