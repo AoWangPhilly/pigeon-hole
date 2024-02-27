@@ -1,20 +1,59 @@
 {% extends 'base.html' %} {% set active = "View" %} {% block content %}
 <div class="mt-5 text-center">
+    <h2 class="mb-5">Pigeon Hole</h2>
+    <div class="row form-outline mb-5" data-mdb-input-init>
+        <input type="search" id="form1" class="form-control col-md-10 mr-2" placeholder="Type query"
+            aria-label="Search" />
+        <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
+    </div>
+    {% if pigeons %}
+    {% for pigeon in pigeons %}
+    <div class="card mb-3" style="max-width: 540px">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="{{ pigeon.image_url }}" class="card-img" alt="{{ pigeon.name }}" />
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pigeon.name }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Band ID: {{ pigeon.band_id }}</small </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    {% else %}
     <h3 class="font-weight-light text-muted mb-5">
         Hmmm... It seems that there are no pigeons to display.
     </h3>
 
-    <img
-        src="{{ url_for('static', filename='img/no-pigeons.webp') }}"
-        style="width: 35%; height: auto"
-    />
+    <img src="{{ url_for('static', filename='img/no-pigeons.webp') }}" style="width: 35%; height: auto" />
     <div class="pt-5">
-        <button
-            class="btn btn-secondary"
-            onclick="window.location.href='/pigeon/add'"
-        >
+        <button class="btn btn-secondary" onclick="window.location.href='/pigeon/add'">
             Add a pigeon
         </button>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

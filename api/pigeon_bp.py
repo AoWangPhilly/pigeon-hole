@@ -50,7 +50,9 @@ def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
 
 @pigeon_bp.route("/view")
 def view():
-    return render_template("view.html")
+    pigeons = db.session.query(Pigeon).all()
+    print(pigeons)
+    return render_template("view.html", pigeons=pigeons)
 
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
