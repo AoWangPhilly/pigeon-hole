@@ -52,13 +52,13 @@ def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
 def view():
     # filter for user only
     pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id")).all()
-    return render_template("view.html", pigeons=pigeons)
+    return render_template("view.html", pigeons=pigeons, session=session)
 
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "GET":
-        return render_template("add.html")
+        return render_template("add.html", session=session)
 
     user_id = session.get("user").get("_id")
     band_id = request.form.get("bandID")
@@ -92,7 +92,7 @@ def add():
 @pigeon_bp.route("/<id>")
 def detail(id):
     pigeon = Pigeon.query.filter_by(_id=id).first()
-    return render_template("detail.html", pigeon=pigeon)
+    return render_template("detail.html", pigeon=pigeon, session=session)
 
 
 @pigeon_bp.route("/delete/<id>")
