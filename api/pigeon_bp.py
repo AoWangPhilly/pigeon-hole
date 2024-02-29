@@ -93,3 +93,19 @@ def add():
 def detail(id):
     pigeon = Pigeon.query.filter_by(_id=id).first()
     return render_template("detail.html", pigeon=pigeon)
+
+
+@pigeon_bp.route("/delete/<id>")
+def delete(id):
+    pigeon = Pigeon.query.filter_by(_id=id).first()
+    db.session.delete(pigeon)
+    db.session.commit()
+    return redirect(url_for("pigeon.view"))
+
+
+@pigeon_bp.route("/edit/<id>", methods=["GET", "POST"])
+def edit(id):
+    if request.method == "GET":
+        pigeon = Pigeon.query.filter_by(_id=id).first()
+        return render_template("edit.html", pigeon=pigeon)
+    return

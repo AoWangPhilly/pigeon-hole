@@ -17,7 +17,6 @@ class User(db.Model):
     password = db.Column("password", db.String(100), nullable=False)
     name = db.Column("name", db.String(100), nullable=False)
 
-
     def __str__(self) -> str:
         return f"<User: {self.email} | Name: {self.name}>"
 
@@ -35,7 +34,9 @@ class Pigeon(db.Model):
 
     __tablename__ = "pigeons"
     _id = db.Column("id", db.Integer, primary_key=True)
-    user_id = db.Column("user_id", db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user_id = db.Column(
+        "user_id", db.Integer, db.ForeignKey("users.id"), nullable=False
+    )
     band_id = db.Column("band_id", db.String(100), unique=True, nullable=False)
     name = db.Column("name", db.String(100), nullable=False)
     sex = db.Column("sex", db.String(50), nullable=False)
@@ -53,6 +54,12 @@ class PigeonHierarchy(db.Model):
 
     __tablename__ = "pigeon_hierarchy"
     _id = db.Column("id", db.Integer, primary_key=True)
-    child_id = db.Column("child_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False)
-    father_id = db.Column("father_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False)
-    mother_id = db.Column("mother_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False)
+    child_id = db.Column(
+        "child_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+    )
+    father_id = db.Column(
+        "father_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+    )
+    mother_id = db.Column(
+        "mother_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+    )
