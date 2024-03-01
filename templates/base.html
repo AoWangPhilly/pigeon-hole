@@ -9,10 +9,19 @@
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="{{ url_for('static', filename='img/pigeonhole.ico' )}}"
+        />
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">Pigeon Hole </a>
+            <!-- <a class="navbar-brand" href="/">Pigeon Hole </a> -->
+            <a class="navbar-brand" href="/">
+                <img
+                    src="{{ url_for('static', filename='img/pigeonhole.ico' )}}"
+            /></a>
             <button
                 class="navbar-toggler"
                 type="button"

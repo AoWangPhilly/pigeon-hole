@@ -7,12 +7,13 @@ from api.about_bp import about_bp
 from api.auth_bp import auth_bp
 from api.pigeon_bp import pigeon_bp
 from api.hierarchy_bp import hierarchy_bp
+
 from dotenv import load_dotenv
 
 from models import db, User
 
 load_dotenv()
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
 app.secret_key = str(os.getenv("SECRET_KEY"))
 app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL")).replace(
