@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -62,4 +63,10 @@ class PigeonHierarchy(db.Model):
     )
     mother_id = db.Column(
         "mother_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "child_id", "father_id", "mother_id", name="unique_constraint"
+        ),
     )

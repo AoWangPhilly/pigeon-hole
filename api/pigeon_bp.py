@@ -51,6 +51,9 @@ def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
 @pigeon_bp.route("/view")
 def view():
     # filter for user only
+    if session.get("user") is None:
+        return redirect(url_for("auth.login"))
+
     pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id")).all()
     return render_template("view.html", pigeons=pigeons, session=session)
 
@@ -91,8 +94,16 @@ def add():
 
 @pigeon_bp.route("/<id>")
 def detail(id):
-    pigeon = Pigeon.query.filter_by(_id=id).first()
-    return render_template("detail.html", pigeon=pigeon, session=session)
+    if not session.get("user"):
+        return redirect(url_for("auth.login"))
+
+    pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
+    pigeon = pigeons.filter_by(_id=id).first()
+    cocks = pigeons.filter(Pigeon.sex == "cock", Pigeon._id != id).all()
+    hens = pigeons.filter(Pigeon.sex == "hen", Pigeon._id != id).all()
+    return render_template(
+        "detail.html", pigeon=pigeon, cocks=cocks, hens=hens, session=session
+    )
 
 
 @pigeon_bp.route("/delete/<id>")
