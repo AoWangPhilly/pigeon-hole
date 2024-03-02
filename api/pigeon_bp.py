@@ -135,7 +135,7 @@ def edit(id):
         blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
     )
     url = blob_storage_response.get("url")
-    
+
     pigeon.user_id = user_id
     pigeon.band_id = band_id
     pigeon.name = name
