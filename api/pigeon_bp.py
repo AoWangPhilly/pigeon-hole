@@ -129,6 +129,12 @@ def edit(id):
     date_of_birth = request.form.get("dateOfBirth")
     image_data = request.files["image"]
 
+    if db.session.query(Pigeon).filter_by(band_id=band_id).first() is not None:
+        return (
+            render_template("edit.html", error="Band ID is not unique", pigeon=pigeon),
+            400,
+        )
+
     blob_storage_response = save_image_to_blob_storage(
         image_data=image_data.read(),
         file_name=image_data.filename,
