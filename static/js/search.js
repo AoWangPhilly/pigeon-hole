@@ -4,4 +4,8 @@ jQuery(document).ready(function($) {
             location.href="?name=" + $(this).val();
         }
     });
+
+    $("#pigeonSearchButton").on("click", function(event) {
+        location.href="?name=" + $("#pigeonSearch").val();
+    });
 });

@@ -26,7 +26,8 @@
     <h2 class="mb-5">Pigeon Hole</h2>
     {% if page%}
     <div class="row form-outline mb-5" data-mdb-input-init>
-        <input id="pigeonSearch" type="search" id="form1" class="form-control col-md-10 mr-2" placeholder="Search pigeon" aria-label="Search" />
+        <input id="pigeonSearch" type="search" id="form1" class="form-control col-md-8 mr-2" placeholder="Search pigeon" aria-label="Search" />
+        <button id="pigeonSearchButton" class="col-md btn btn-secondary">Search</button>
         <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
     </div>
     {% for pigeon in page %}
@@ -40,7 +41,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ pigeon.name }}</h5>
                         <p class="card-text">
-                            <small class="text-muted">Band ID: {{ pigeon.band_id }}</small </p>
+                            <small class="text-muted">Band ID: {{ pigeon.band_id }}</small> 
+                        </p>
                     </div>
                 </div>
             </div>
