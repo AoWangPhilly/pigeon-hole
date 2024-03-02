@@ -129,7 +129,16 @@ def edit(id):
     date_of_birth = request.form.get("dateOfBirth")
     image_data = request.files["image"]
 
-    if db.session.query(Pigeon).filter_by(band_id=band_id).first() is not None:
+    pigeon.user_id = user_id
+    pigeon.band_id = band_id
+    pigeon.name = name
+    pigeon.sex = sex
+    pigeon.color = color
+    pigeon.date_of_birth = date_of_birth
+    
+    try:
+        db.session.commit()
+    except:
         return (
             render_template("edit.html", error="Band ID is not unique", pigeon=pigeon),
             400,
@@ -142,12 +151,6 @@ def edit(id):
     )
     url = blob_storage_response.get("url")
 
-    pigeon.user_id = user_id
-    pigeon.band_id = band_id
-    pigeon.name = name
-    pigeon.sex = sex
-    pigeon.color = color
-    pigeon.date_of_birth = date_of_birth
     pigeon.image_data = url
     db.session.commit()
 
