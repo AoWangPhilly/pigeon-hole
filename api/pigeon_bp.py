@@ -119,4 +119,30 @@ def edit(id):
     if request.method == "GET":
         pigeon = Pigeon.query.filter_by(_id=id).first()
         return render_template("edit.html", pigeon=pigeon)
-    return
+    
+    pigeon = Pigeon.query.filter_by(_id=id).first()
+    user_id = session.get("user").get("_id")
+    band_id = request.form.get("bandID")
+    name = request.form.get("name")
+    sex = request.form.get("sex")
+    color = request.form.get("color")
+    date_of_birth = request.form.get("dateOfBirth")
+    image_data = request.files["image"]
+
+    blob_storage_response = save_image_to_blob_storage(
+        image_data=image_data.read(),
+        file_name=image_data.filename,
+        blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
+    )
+    url = blob_storage_response.get("url")
+    
+    pigeon.user_id = user_id
+    pigeon.band_id = band_id
+    pigeon.name = name
+    pigeon.sex = sex
+    pigeon.color = color
+    pigeon.date_of_birth = date_of_birth
+    pigeon.image_data = url
+    db.session.commit()
+
+    return redirect(url_for("pigeon.view"))

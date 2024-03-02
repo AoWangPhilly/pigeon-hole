@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% set active = "Register" %} {% block content %}
+<section class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 450px">
+        <h1 class="card-title mb-4 text-center">Edit Pigeon</h1>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="/pigeon/edit/{{ pigeon._id }}" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="bandId">Band ID</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="bandId"
+                        name="bandID"
+                        value="{{ pigeon.band_id }}"
+                        required
+                    />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputName2">Name</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="inputName2"
+                        value="{{ pigeon.name }}"
+                        name="name"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Sex</label>
+                    <div class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            name="sex"
+                            id="gridRadios1"
+                            value="cock"
+                            {% if pigeon.sex == 'cock' %}checked{% endif %}
+                        />
+                        <label class="form-check-label" for="gridRadios1"
+                            >Cock</label
+                        >
+                    </div>
+                    <div class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            name="sex"
+                            id="gridRadios2"
+                            value="hen"
+                            {% if pigeon.sex == 'hen' %}checked{% endif %}
+                        />
+                        <label class="form-check-label" for="gridRadios2"
+                            >Hen</label
+                        >
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inlineFormCustomSelect">Color</label>
+                    <select
+                        class="custom-select mr-sm-2"
+                        id="inlineFormCustomSelect"
+                        name="color"
+                    >
+                        <option>Choose color</option>
+                        <option value="blue" {% if pigeon.color == 'blue' %}selected{% endif %}>Blue</option>
+                        <option value="black" {% if pigeon.color == 'black' %}selected{% endif %}>Black</option>
+                        <option value="red" {% if pigeon.color == 'red' %}selected{% endif %}>Red</option>
+                        <option value="yellow" {% if pigeon.color == 'yellow' %}selected{% endif %}>Yellow</option>
+                        <option value="white" {% if pigeon.color == 'white' %}selected{% endif %}>White</option>
+                        <option value="checker" {% if pigeon.color == 'checker' %}selected{% endif %}>Checker</option>
+                        <option value="barred" {% if pigeon.color == 'barred' %}selected{% endif %}>Barred</option>
+                        <option value="pied" {% if pigeon.color == 'pied' %}selected{% endif %}>Pied</option>
+                        <option value="grizzle" {% if pigeon.color == 'grizzle' %}selected{% endif %}>Grizzle</option>
+                        <option value="t-pattern" {% if pigeon.color == 't-pattern' %}selected{% endif %}>T-pattern</option>
+                        <option value="dun" {% if pigeon.color == 'dun' %}selected{% endif %}>Dun</option>
+                        <option value="mealy" {% if pigeon.color == 'mealy' %}selected{% endif %}>Mealy</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <div>
+                    <input
+                        class="form-control"
+                        type="date"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        value="{{ pigeon.date_of_birth }}"
+                    />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="avatar" class="form-label">Upload Image</label>
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/png, image/jpeg"
+                />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="window.location.href='/pigeon/view'"
+            >
+                Cancel
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
