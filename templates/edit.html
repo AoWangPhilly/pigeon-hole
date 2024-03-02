@@ -7,6 +7,12 @@
         <div class="alert alert-danger" role="alert">{{ error }}</div>
         {% endif %}
 
+        <img
+            src="{{ pigeon.image_url }}"
+            class="card-img"
+            alt="{{ pigeon.name }}"
+        />
+
         <form method="post" action="/pigeon/edit/{{ pigeon._id }}" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-md-6">
