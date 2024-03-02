@@ -151,7 +151,7 @@ def edit(id):
     )
     url = blob_storage_response.get("url")
 
-    pigeon.image_data = url
+    pigeon.image_url = url
     db.session.commit()
 
     return redirect(url_for("pigeon.view"))
