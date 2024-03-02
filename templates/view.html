@@ -1,12 +1,35 @@
-{% extends 'base.html' %} {% set active = "View" %} {% block content %}
+{% extends 'base.html' %} {% set active = "View" %} 
+
+{% macro render_pagination(pagination, endpoint) %}
+    <div class=page-items>
+        {{ pagination.first }} - {{ pagination.last }} of {{ pagination.total }}
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page != pagination.page %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="page-item" ><a class="page-link" href="#">{{ page }}</a></li>
+                {% endif %}
+            {% else %}
+                <li class="page-item">…</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endmacro %}
+
+{% block content %}
 <div class="mt-5 text-center">
     <h2 class="mb-5">Pigeon Hole</h2>
-    {% if pigeons%}
+    {% if page%}
     <div class="row form-outline mb-5" data-mdb-input-init>
         <input id="pigeonSearch" type="search" id="form1" class="form-control col-md-10 mr-2" placeholder="Search pigeon" aria-label="Search" />
         <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
     </div>
-    {% for pigeon in pigeons %}
+    {% for pigeon in page %}
     <div class="card mb-3" style="max-width: 540px" data-name="{{ pigeon.name }}">
         <a href="/pigeon/{{pigeon._id}}">
             <div class="row no-gutters">
@@ -24,25 +47,7 @@
         </a>
     </div>
     {% endfor %}
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    {{ render_pagination(page, "pigeon.view") }}
 
     {% else %}
     <h3 class="font-weight-light text-muted mb-5">

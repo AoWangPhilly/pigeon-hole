@@ -53,9 +53,13 @@ def view():
     # filter for user only
     if session.get("user") is None:
         return redirect(url_for("auth.login"))
-
-    pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id")).all()
-    return render_template("view.html", pigeons=pigeons, session=session)
+    
+    nameFilter = request.args.get('name')
+    if nameFilter:
+        page = db.paginate(Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(Pigeon.name.icontains(nameFilter)))
+    else:
+        page = db.paginate(Pigeon.query.filter_by(user_id=session.get("user").get("_id")))
+    return render_template("view.html", page=page, session=session)
 
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
