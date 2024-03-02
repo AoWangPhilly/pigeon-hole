@@ -53,13 +53,24 @@ def view():
     # filter for user only
     if session.get("user") is None:
         return redirect(url_for("auth.login"))
-    
-    nameFilter = request.args.get('name')
+
+    nameFilter = request.args.get("name")
     if nameFilter:
-        page = db.paginate(Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(Pigeon.name.icontains(nameFilter)))
+        page = db.paginate(
+            Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(
+                Pigeon.name.icontains(nameFilter)
+            )
+        )
     else:
-        page = db.paginate(Pigeon.query.filter_by(user_id=session.get("user").get("_id")))
-    return render_template("view.html", page=page, session=session, currentSearch=request.args.get('currentSearch', ''))
+        page = db.paginate(
+            Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
+        )
+    return render_template(
+        "view.html",
+        page=page,
+        session=session,
+        currentSearch=request.args.get("currentSearch", ""),
+    )
 
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
@@ -123,7 +134,7 @@ def edit(id):
     if request.method == "GET":
         pigeon = Pigeon.query.filter_by(_id=id).first()
         return render_template("edit.html", pigeon=pigeon)
-    
+
     pigeon = Pigeon.query.filter_by(_id=id).first()
     user_id = session.get("user").get("_id")
     band_id = request.form.get("bandID")
@@ -139,7 +150,7 @@ def edit(id):
     pigeon.sex = sex
     pigeon.color = color
     pigeon.date_of_birth = date_of_birth
-    
+
     try:
         db.session.commit()
     except:

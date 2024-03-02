@@ -56,13 +56,22 @@ class PigeonHierarchy(db.Model):
     __tablename__ = "pigeon_hierarchy"
     _id = db.Column("id", db.Integer, primary_key=True)
     child_id = db.Column(
-        "child_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+        "child_id",
+        db.Integer,
+        db.ForeignKey("pigeons.id", ondelete="CASCADE"),
+        nullable=False,
     )
     father_id = db.Column(
-        "father_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+        "father_id",
+        db.Integer,
+        db.ForeignKey("pigeons.id", ondelete="CASCADE"),
+        nullable=False,
     )
     mother_id = db.Column(
-        "mother_id", db.Integer, db.ForeignKey("pigeons.id"), nullable=False
+        "mother_id",
+        db.Integer,
+        db.ForeignKey("pigeons.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     __table_args__ = (
