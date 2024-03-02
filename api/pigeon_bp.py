@@ -59,7 +59,7 @@ def view():
         page = db.paginate(Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(Pigeon.name.icontains(nameFilter)))
     else:
         page = db.paginate(Pigeon.query.filter_by(user_id=session.get("user").get("_id")))
-    return render_template("view.html", page=page, session=session)
+    return render_template("view.html", page=page, session=session, currentSearch=request.args.get('currentSearch', ''))
 
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
