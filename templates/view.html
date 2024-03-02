@@ -3,12 +3,11 @@
     <h2 class="mb-5">Pigeon Hole</h2>
     {% if pigeons%}
     <div class="row form-outline mb-5" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control col-md-10 mr-2" placeholder="Type query"
-            aria-label="Search" />
+        <input id="pigeonSearch" type="search" id="form1" class="form-control col-md-10 mr-2" placeholder="Search pigeon" aria-label="Search" />
         <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
     </div>
     {% for pigeon in pigeons %}
-    <div class="card mb-3" style="max-width: 540px">
+    <div class="card mb-3" style="max-width: 540px" data-name="{{ pigeon.name }}">
         <a href="/pigeon/{{pigeon._id}}">
             <div class="row no-gutters">
                 <div class="col-md-4">
@@ -58,4 +57,7 @@
     </div>
     {% endif %}
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
 {% endblock %}
