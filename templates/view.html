@@ -30,25 +30,22 @@
         <button id="pigeonSearchButton" class="col-md btn btn-secondary">Search</button>
         <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
     </div>
-    {% for pigeon in page %}
-    <div class="card mb-3" style="max-width: 540px" data-name="{{ pigeon.name }}">
-        <a href="/pigeon/{{pigeon._id}}">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="{{ pigeon.image_url }}" class="card-img" alt="{{ pigeon.name }}" />
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ pigeon.name }}</h5>
-                        <p class="card-text">
-                            <small class="text-muted">Band ID: {{ pigeon.band_id }}</small> 
-                        </p>
-                    </div>
+    <div class="row">
+        {% for pigeon in page %}
+        <div class="col-4 h-100">
+            <div class="card" data-name="{{ pigeon.name }}">
+                <img src="{{ pigeon.image_url }}" class="card-img mx-auto" alt="{{ pigeon.name }}" style="max-width:400px;width:100%" />
+                <div class="card-body">
+                    <h5 class="card-title">{{ pigeon.name }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Band ID: {{ pigeon.band_id }}</small> 
+                    </p>
+                    <a href="/pigeon/{{pigeon._id}}"></a>
                 </div>
             </div>
-        </a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
     {{ render_pagination(page, "pigeon.view") }}
 
     {% else %}
