@@ -36,7 +36,7 @@ class Pigeon(db.Model):
     __tablename__ = "pigeons"
     _id = db.Column("id", db.Integer, primary_key=True)
     user_id = db.Column(
-        "user_id", db.Integer, db.ForeignKey("users.id"), nullable=False
+        "user_id", db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     band_id = db.Column("band_id", db.String(100), unique=True, nullable=False)
     name = db.Column("name", db.String(100), nullable=False)
