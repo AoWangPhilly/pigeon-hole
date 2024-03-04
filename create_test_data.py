@@ -90,7 +90,7 @@ for index, file_name in enumerate(test_image_file_names):
 
     pigeon = Pigeon(
         user_id=user._id,
-        band_id=f"{random.choice(NATIONAL_ORG)}-{datetime.datetime.now().year}-{generate_random_letters()}-{generate_string_of_seven_numbers()}",
+        band_id=f"{random.choice(NATIONAL_ORG)}-{random_date.year}-{generate_random_letters()}-{generate_string_of_seven_numbers()}",
         name=f"Pigeon {index}",
         sex=random.choice(SEX),
         color=random.choice(COLORS),

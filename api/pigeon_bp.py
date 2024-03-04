@@ -47,6 +47,12 @@ def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
     response = requests.get(VERCEL_API_URL, headers=headers).json()
     return response
 
+@pigeon_bp.route("/get/<pigeon_id>")
+def get(pigeon_id):
+    pigeon = Pigeon.query.filter_by(_id=pigeon_id).first()
+    if pigeon is None:
+        return jsonify({"error": "Pigeon not found"}), 404
+    return jsonify(pigeon)
 
 @pigeon_bp.route("/view")
 def view():
