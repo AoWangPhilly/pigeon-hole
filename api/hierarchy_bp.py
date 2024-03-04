@@ -50,3 +50,5 @@ def add(id: str):
 # @hierarchy_bp.route("/view/<id>")
 # def view(id: str):
 #     pigeon_hierarchy = PigeonHierarchy.query.filter_by(child_id=id).first()
+#     if pigeon_hierarchy is None:
+#         return jsonify({"error": "Pigeon not found"}), 404

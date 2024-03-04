@@ -5,6 +5,7 @@ $(document).ready(() => {
     $.get(`/pigeon/get/${selected}`, (data) => {
       console.log(data);
       $("#cockImage").attr("src", data["image_url"]);
+      $("#fatherName").text(data["name"]);
     });
   }
 
@@ -14,6 +15,7 @@ $(document).ready(() => {
     $.get(`/pigeon/get/${selected}`, (data) => {
       console.log(data);
       $("#henImage").attr("src", data["image_url"]);
+      $("#motherName").text(data["name"]);
     });
   }
 
