@@ -57,4 +57,7 @@ def view(id: str):
     pigeon_hierarchy = PigeonHierarchy.query.filter_by(child_id=id).first()
     if pigeon_hierarchy is None:
         return redirect(url_for("pigeon.detail", id=id))
-    return render_template("hierarchy.html", pigeon_hierarchy=pigeon_hierarchy)
+    father = Pigeon.query.filter_by(_id=pigeon_hierarchy.father_id).first()
+    mother = Pigeon.query.filter_by(_id=pigeon_hierarchy.mother_id).first()
+    child = Pigeon.query.filter_by(_id=pigeon_hierarchy.child_id).first()
+    return render_template("hierarchy.html", father=father, mother=mother, child=child)

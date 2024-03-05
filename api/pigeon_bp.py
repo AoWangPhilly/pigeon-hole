@@ -178,4 +178,4 @@ def edit(id):
         pigeon.image_url = url
         db.session.commit()
 
-    return redirect(url_for("pigeon.view"))
+    return redirect(url_for("pigeon.detail", id=id))

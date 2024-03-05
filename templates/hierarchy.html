@@ -5,36 +5,41 @@
         <div class="tree">
 	<ul>
 		<li>
-			<a href="#">Parent</a>
+			<a href="/pigeon/{{ child._id }}">
+    			<div class="card">
+    			    <div class="card-body">
+                        <h5 class="card-title">{{ child.name }}</h5>
+                        <p class="card-text"
+                            <small class="text-muted">{{ child.band_id }}</small>
+                            <small class="text-muted"> {{ child.sex}}</small>
+                        </p>
+
+                        <p>Child</p>
+    			    </div>
+    			</div>
+			</a>
 			<ul>
 				<li>
-					<a href="#">Child</a>
-					<ul>
-						<li>
-							<a href="#">Grand Child</a>
-						</li>
-					</ul>
+					<a href="/pigeon/{{ father._id }}">    			<div class="card">
+    			    <div class="card-body">
+                        <h5 class="card-title">{{ father.name }}</h5>
+                        <p class="card-text
+                            <small class="text-muted">{{ father.band_id }}</small>
+                        </p>
+                        <p>Father</p>
+    			    </div>
+    			</div></a>
 				</li>
 				<li>
-					<a href="#">Child</a>
-					<ul>
-						<li><a href="#">Grand Child</a></li>
-						<li>
-							<a href="#">Grand Child</a>
-							<ul>
-								<li>
-									<a href="#">Great Grand Child</a>
-								</li>
-								<li>
-									<a href="#">Great Grand Child</a>
-								</li>
-								<li>
-									<a href="#">Great Grand Child</a>
-								</li>
-							</ul>
-						</li>
-						<li><a href="#">Grand Child</a></li>
-					</ul>
+					<a href="/pigeon/{{ mother._id }}">    			<div class="card">
+    			    <div class="card-body">
+                        <h5 class="card-title">{{ mother.name }}</h5>
+                        <p class="card-text
+                            <small class="text-muted">{{ mother.band_id }}</small>
+                        </p>
+                        <p>Mother</p>
+    			    </div>
+    			</div></a>
 				</li>
 			</ul>
 		</li>
@@ -42,7 +47,7 @@
         </div>
         <button
             class="btn btn-secondary btn-back"
-            onclick="window.location.href='/pigeon/{{ pigeon_hierarchy.child_id }}'"
+            onclick="window.location.href='/pigeon/{{ child._id }}'"
         >
             Back
         </button>
