@@ -9,7 +9,7 @@
             {% for page in pagination.iter_pages() %}
             {% if page %}
                 {% if page != pagination.page %}
-                    <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a></li>
+                    <li class="page-item"><a class="page-link" href="{{ url_for(endpoint, page=page) }}&{{request.query_string.decode()}}">{{ page }}</a></li>
                 {% else %}
                     <li class="page-item" ><a class="page-link" href="#">{{ page }}</a></li>
                 {% endif %}
