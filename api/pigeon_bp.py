@@ -64,12 +64,13 @@ def view():
     if nameFilter:
         page = db.paginate(
             Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(
-                Pigeon.name.icontains(nameFilter)
+                Pigeon.name.icontains(nameFilter), per_page=6
             )
         )
     else:
         page = db.paginate(
-            Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
+            Pigeon.query.filter_by(user_id=session.get("user").get("_id")),
+            per_page=6
         )
     return render_template(
         "view.html",

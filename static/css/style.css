@@ -1,6 +1,13 @@
 .form-label {
     margin-bottom: 0; /* Reduce the bottom margin of the label */
 }
+
 .card {
     margin-top: 10px; /* Reduce the top margin of the card for closer alignment */
+}
+
+#card-img-top {
+    width: 100%;
+    height: 25%
+    object-fit: cover;
 }

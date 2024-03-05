@@ -47,8 +47,9 @@ def add(id: str):
         db.session.commit()
     return redirect(url_for("pigeon.detail", id=id))
 
-# @hierarchy_bp.route("/view/<id>")
-# def view(id: str):
-#     pigeon_hierarchy = PigeonHierarchy.query.filter_by(child_id=id).first()
-#     if pigeon_hierarchy is None:
-#         return jsonify({"error": "Pigeon not found"}), 404
+@hierarchy_bp.route("/view/<id>")
+def view(id: str):
+    pigeon_hierarchy = PigeonHierarchy.query.filter_by(child_id=id).first()
+    if pigeon_hierarchy is None:
+        return redirect(url_for("pigeon.detail", id=id))
+    return render_template("hierarchy.html", pigeon_hierarchy=pigeon_hierarchy)
