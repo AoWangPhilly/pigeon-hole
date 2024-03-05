@@ -165,14 +165,15 @@ def edit(id):
             400,
         )
 
-    blob_storage_response = save_image_to_blob_storage(
-        image_data=image_data.read(),
-        file_name=image_data.filename,
-        blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
-    )
-    url = blob_storage_response.get("url")
+    if image_data:
+        blob_storage_response = save_image_to_blob_storage(
+            image_data=image_data.read(),
+            file_name=image_data.filename,
+            blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
+        )
+        url = blob_storage_response.get("url")
 
-    pigeon.image_url = url
-    db.session.commit()
+        pigeon.image_url = url
+        db.session.commit()
 
     return redirect(url_for("pigeon.view"))
