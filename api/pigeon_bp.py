@@ -77,7 +77,7 @@ def view():
         "view.html",
         page=page,
         session=session,
-        currentSearch=request.args.get("currentSearch", ""),
+        name=request.args.get("name", ""),
     )
 
 
