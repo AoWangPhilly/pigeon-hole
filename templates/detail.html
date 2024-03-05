@@ -102,7 +102,7 @@
                                         >Select Father</label
                                     >
                                     <div class="d-flex justify-content-center">
-                                        <div class="card" style="width: 18rem">
+                                        <div id="fatherCard" class="card" style="width: 18rem">
                                             <img
                                                 id="cockImage"
                                                 src=""
@@ -127,6 +127,9 @@
                                         name="father_id"
                                         required
                                     >
+                                        <option value="">
+                                            Select Band ID
+                                        </option>
                                         {% for cock in cocks %}
                                         <option value="{{ cock._id }}">
                                             {{ cock.band_id }}
@@ -143,7 +146,7 @@
                                         >Select Mother</label
                                     >
                                     <div class="d-flex justify-content-center">
-                                        <div class="card" style="width: 18rem">
+                                        <div id="motherCard" class="card" style="width: 18rem">
                                             <img
                                                 id="henImage"
                                                 src=""
@@ -168,6 +171,9 @@
                                         name="mother_id"
                                         required
                                     >
+                                        <option value="">
+                                            Select Band ID
+                                        </option>
                                         {% for hen in hens %}
                                         <option value="{{ hen._id }}">
                                             {{ hen.band_id }}
@@ -246,6 +252,8 @@
         function updateFatherSelect(pigeonId) {
           // Fetch the current father and mother selected for the pigeon
           $.get(`/hierarchy/get/${pigeonId}`, (data) => {
+            // if API failed
+
               console.log(data);
               // Directly set the value of the father and mother <select> elements
               $("#fatherSelect").val(data.father_id);
