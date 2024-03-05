@@ -95,6 +95,10 @@ def add():
     date_of_birth = request.form.get("dateOfBirth")
     image_data = request.files["image"]
 
+    band_id_exist = Pigeon.query.filter_by(band_id=band_id).first()
+    if band_id_exist:
+        return render_template("add.html", session=session, error="Band ID already exists")
+
     blob_storage_response = save_image_to_blob_storage(
         image_data=image_data.read(),
         file_name=image_data.filename,
