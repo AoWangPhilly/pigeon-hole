@@ -23,12 +23,17 @@ hierarchy_bp = Blueprint(
     __name__,
 )
 
+@hierarchy_bp.route("/get/<pigeon_id>")
+def get(pigeon_id):
+    hierarchy = PigeonHierarchy.query.filter_by(child_id=pigeon_id).first()
+    if hierarchy is None:
+        return jsonify({"error": "Pigeon not found"}), 404
+    return jsonify(hierarchy)
 
 @hierarchy_bp.route("/add/<id>", methods=["POST"])
 def add(id: str):
     father_id = request.form.get("father_id")
     mother_id = request.form.get("mother_id")
-
     if not all((father_id, mother_id)):
         return jsonify({"error": "All fields are required"}), 400
 
