@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% set active = "View" %} 
+{% extends 'base.html' %} {% set active = "View" %}
 
 {% macro render_pagination(pagination, endpoint) %}
     <div class=page-items>
@@ -27,18 +27,22 @@
     {% if page%}
     <div class="row form-outline mb-5" data-mdb-input-init>
         <input id="pigeonSearch" type="search" id="form1" class="form-control col-md-8 mr-2" placeholder="Search pigeon" aria-label="Search" value="{{ currentSearch }}" />
-        <button id="pigeonSearchButton" class="col-md btn btn-secondary">Search</button>
+        <button id="pigeonSearchButton" class="col-md btn btn-secondary mr-2">Search</button>
         <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
     </div>
     <div class="row">
         {% for pigeon in page %}
         <div class="col-4 h-100">
-            <div class="card" data-name="{{ pigeon.name }}">
-                <img src="{{ pigeon.image_url }}" class="card-img mx-auto" alt="{{ pigeon.name }}" style="max-width:400px;width:100%" />
+
+            <div id="card-img-top" class="card" data-name="{{ pigeon.name }}">
+                <img src="{{ pigeon.image_url }}" class="card-img mx-auto" alt="{{ pigeon.name }}" style="
+                    height: 300px;
+                    object-fit: cover;
+                " />
                 <div class="card-body">
                     <h5 class="card-title">{{ pigeon.name }}</h5>
                     <p class="card-text">
-                        <small class="text-muted">Band ID: {{ pigeon.band_id }}</small> 
+                        <small class="text-muted">Band ID: {{ pigeon.band_id }}</small>
                     </p>
                     <a href="/pigeon/{{pigeon._id}}" class="btn btn-primary stretched-link">View pigeon</a>
                 </div>
@@ -53,7 +57,7 @@
         Hmmm... It seems that there are no pigeons to display.
     </h3>
 
-    <img src="{{ url_for('static', filename='img/no-pigeons.webp') }}" style="width: 35%; height: auto" />
+    <img src="{{ url_for('static', filename='img/no-pigeons.webp') }}" />
     <div class="pt-5">
         <button class="btn btn-secondary" onclick="window.location.href='/pigeon/add'">
             Add a pigeon

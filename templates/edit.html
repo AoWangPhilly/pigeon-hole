@@ -9,7 +9,7 @@
 
         <img
             src="{{ pigeon.image_url }}"
-            class="card-img"
+            class="card-img mb-4"
             alt="{{ pigeon.name }}"
         />
 
@@ -113,11 +113,11 @@
                 />
             </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary" onclick="window.location.href='/pigeon/{{ pigeon._id }}'">Update</button>
             <button
                 type="button"
                 class="btn btn-secondary"
-                onclick="window.location.href='/pigeon/view'"
+                onclick="window.location.href='/pigeon/{{ pigeon._id }}'"
             >
                 Cancel
             </button>

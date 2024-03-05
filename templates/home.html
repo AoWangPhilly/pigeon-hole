@@ -19,8 +19,15 @@
                 style="width: 30%; margin-bottom: 30px" />
         </div>
         <!-- Get Started Button -->
+        {% if not session["user"] %}
         <div class="mb-5">
             <a href="/auth/login" class="btn btn-secondary btn-lg">Get Started</a>
         </div>
+        {% else %}
+        <div class="mb-5">
+            <a href="/pigeon/view" class="btn btn-secondary btn-lg">View Pigeons</a>
+        </div>
+        {% endif %}
+
 </div>
 {% endblock %}

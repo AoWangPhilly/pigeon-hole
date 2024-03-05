@@ -32,7 +32,12 @@
         </div>
     </div>
     <div class="row mb-5 mt-5">
-        <button class="col btn btn-primary mr-2">View Relationship</button>
+        <button
+            class="col btn btn-primary mr-2"
+            onclick="location.href='/hierarchy/view/{{pigeon._id}}'"
+        >
+            View Relationship
+        </button>
         <button
             class="col btn btn-secondary mr-2"
             data-toggle="modal"
@@ -97,7 +102,7 @@
                                         >Select Father</label
                                     >
                                     <div class="d-flex justify-content-center">
-                                        <div class="card" style="width: 18rem">
+                                        <div id="fatherCard" class="card" style="width: 18rem">
                                             <img
                                                 id="cockImage"
                                                 src=""
@@ -120,7 +125,11 @@
                                         class="form-control mt-2"
                                         id="fatherSelect"
                                         name="father_id"
+                                        required
                                     >
+                                        <option value="">
+                                            Select Band ID
+                                        </option>
                                         {% for cock in cocks %}
                                         <option value="{{ cock._id }}">
                                             {{ cock.band_id }}
@@ -137,7 +146,7 @@
                                         >Select Mother</label
                                     >
                                     <div class="d-flex justify-content-center">
-                                        <div class="card" style="width: 18rem">
+                                        <div id="motherCard" class="card" style="width: 18rem">
                                             <img
                                                 id="henImage"
                                                 src=""
@@ -160,7 +169,11 @@
                                         class="form-control mt-2"
                                         id="motherSelect"
                                         name="mother_id"
+                                        required
                                     >
+                                        <option value="">
+                                            Select Band ID
+                                        </option>
                                         {% for hen in hens %}
                                         <option value="{{ hen._id }}">
                                             {{ hen.band_id }}
@@ -179,7 +192,7 @@
                             >
                                 Close
                             </button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" value="Submit" class="btn btn-primary">
                                 Save changes
                             </button>
                         </div>
@@ -235,6 +248,25 @@
             </div>
         </div>
     </div>
+    <script>
+        function updateFatherSelect(pigeonId) {
+          // Fetch the current father and mother selected for the pigeon
+          $.get(`/hierarchy/get/${pigeonId}`, (data) => {
+            // if API failed
+
+              console.log(data);
+              // Directly set the value of the father and mother <select> elements
+              $("#fatherSelect").val(data.father_id);
+              $("#motherSelect").val(data.mother_id);
+
+              // Optionally, trigger change event if you have attached handlers that need to react to this
+              $("#fatherSelect").change();
+              $("#motherSelect").change();
+          });
+        }
+        updateFatherSelect({{ pigeon._id }});
+    </script>
+
     {% endif %}
 </div>
 
