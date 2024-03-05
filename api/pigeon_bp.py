@@ -48,6 +48,7 @@ def read_image_from_blob_storage(blob_file_name: str) -> BytesIO:
     response = requests.get(VERCEL_API_URL, headers=headers).json()
     return response
 
+
 @pigeon_bp.route("/get/<pigeon_id>")
 def get(pigeon_id):
     pigeon = Pigeon.query.filter_by(_id=pigeon_id).first()
@@ -55,27 +56,35 @@ def get(pigeon_id):
         return jsonify({"error": "Pigeon not found"}), 404
     return jsonify(pigeon)
 
+
 @pigeon_bp.route("/view")
 def view():
     # filter for user only
     if session.get("user") is None:
         return redirect(url_for("auth.login"))
 
+
     nameFilter = request.args.get("name")
     if nameFilter:
         page = db.paginate(
-            Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(
+            Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
+            .filter(
                 Pigeon.name.icontains(nameFilter),
-            ).order_by(Pigeon.name),
-            per_page=6
+            )
+            .order_by(Pigeon.name),
+            per_page=6,
         )
     else:
         page = db.paginate(
-            Pigeon.query.filter_by(user_id=session.get("user").get("_id")).order_by(Pigeon.name),
-            per_page=6
+            Pigeon.query.filter_by(user_id=session.get("user").get("_id")).order_by(
+                Pigeon.name
+            ),
+            per_page=6,
         )
+    is_empty = Pigeon.query.filter_by(user_id=session.get("user").get("_id")).first() is None
     return render_template(
         "view.html",
+        is_empty=is_empty,
         page=page,
         session=session,
         name=request.args.get("name", ""),
@@ -97,7 +106,9 @@ def add():
 
     band_id_exist = Pigeon.query.filter_by(band_id=band_id).first()
     if band_id_exist:
-        return render_template("add.html", session=session, error="Band ID already exists")
+        return render_template(
+            "add.html", session=session, error="Band ID already exists"
+        )
 
     blob_storage_response = save_image_to_blob_storage(
         image_data=image_data.read(),
@@ -128,12 +139,25 @@ def detail(id):
     pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
     pigeon = pigeons.filter_by(_id=id).first()
 
-    cocks = pigeons.filter(Pigeon.sex == "cock", Pigeon._id != id, Pigeon.date_of_birth < pigeon.date_of_birth).all()
-    hens = pigeons.filter(Pigeon.sex == "hen", Pigeon._id != id, Pigeon.date_of_birth < pigeon.date_of_birth).all()
+    cocks = pigeons.filter(
+        Pigeon.sex == "cock",
+        Pigeon._id != id,
+        Pigeon.date_of_birth < pigeon.date_of_birth,
+    ).all()
+    hens = pigeons.filter(
+        Pigeon.sex == "hen",
+        Pigeon._id != id,
+        Pigeon.date_of_birth < pigeon.date_of_birth,
+    ).all()
     pigeon_hierarchy = PigeonHierarchy.query.filter_by(child_id=id).first()
 
     return render_template(
-        "detail.html", pigeon=pigeon, cocks=cocks, hens=hens, session=session, pigeon_hierarchy=pigeon_hierarchy
+        "detail.html",
+        pigeon=pigeon,
+        cocks=cocks,
+        hens=hens,
+        session=session,
+        pigeon_hierarchy=pigeon_hierarchy,
     )
 
 
@@ -159,6 +183,25 @@ def edit(id):
     color = request.form.get("color")
     date_of_birth = request.form.get("dateOfBirth")
     image_data = request.files["image"]
+
+    if pigeon.sex == "cock":
+        hierarchy = PigeonHierarchy.query.filter_by(father_id=id).first()
+    else:
+        hierarchy = PigeonHierarchy.query.filter_by(mother_id=id).first()
+    child_pigeon = Pigeon.query.filter_by(_id=hierarchy.child_id).first()
+
+    if hierarchy and pigeon.sex == "cock" and sex == "hen":
+        return render_template(
+            "edit.html",
+            error=f"Pigeon is already father to {child_pigeon.band_id}",
+            pigeon=pigeon,
+        )
+    else:
+        return render_template(
+            "edit.html",
+            error=f"Pigeon is already mother to {child_pigeon.band_id}",
+            pigeon=pigeon,
+        )
 
     pigeon.user_id = user_id
     pigeon.band_id = band_id

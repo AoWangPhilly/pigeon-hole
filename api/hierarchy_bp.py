@@ -23,12 +23,14 @@ hierarchy_bp = Blueprint(
     __name__,
 )
 
+
 @hierarchy_bp.route("/get/<pigeon_id>")
 def get(pigeon_id):
     hierarchy = PigeonHierarchy.query.filter_by(child_id=pigeon_id).first()
     if hierarchy is None:
         return jsonify({"error": "Pigeon not found"}), 404
     return jsonify(hierarchy)
+
 
 @hierarchy_bp.route("/add/<id>", methods=["POST"])
 def add(id: str):
@@ -51,6 +53,7 @@ def add(id: str):
         db.session.add(pigeon)
         db.session.commit()
     return redirect(url_for("pigeon.detail", id=id))
+
 
 @hierarchy_bp.route("/view/<id>")
 def view(id: str):

@@ -1,58 +1,61 @@
-{% extends 'base.html' %} {% set active = "View" %} {% block content %}
+{% extends 'base.html' %}
+{% set active = "View" %}
+{% block content %}
 <div class="mt-5 text-center">
     <h2 class="mb-5">Pigeon Hole</h2>
     <div class="content-container">
         <div class="tree">
-	<ul>
-		<li>
-			<a href="/pigeon/{{ child._id }}">
-    			<div class="card">
-    			    <div class="card-body">
-                        <h5 class="card-title">{{ child.name }}</h5>
-                        <p class="card-text"
-                            <small class="text-muted">{{ child.band_id }}</small>
-                            <small class="text-muted"> {{ child.sex}}</small>
-                        </p>
-
-                        <p>Child</p>
-    			    </div>
-    			</div>
-			</a>
-			<ul>
-				<li>
-					<a href="/pigeon/{{ father._id }}">    			<div class="card">
-    			    <div class="card-body">
-                        <h5 class="card-title">{{ father.name }}</h5>
-                        <p class="card-text
-                            <small class="text-muted">{{ father.band_id }}</small>
-                        </p>
-                        <p>Father</p>
-    			    </div>
-    			</div></a>
-				</li>
-				<li>
-					<a href="/pigeon/{{ mother._id }}">    			<div class="card">
-    			    <div class="card-body">
-                        <h5 class="card-title">{{ mother.name }}</h5>
-                        <p class="card-text
-                            <small class="text-muted">{{ mother.band_id }}</small>
-                        </p>
-                        <p>Mother</p>
-    			    </div>
-    			</div></a>
-				</li>
-			</ul>
-		</li>
-	</ul>
+            <ul>
+                <li>
+                    <a href="/pigeon/{{ child._id }}">
+                        <div class="card">
+                            <img src="{{ child.image_url }}" class="card-img-top" alt="{{ child.name }}" style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ child.name }}</h5>
+                                <p class="card-text">
+                                <div><small class="text-muted">{{ child.band_id }}</small></div>
+                                <div>
+                                    <small class="text-muted"> {{ child.sex }}</small>
+                                </div>
+                                </p>
+                                <p>Child</p>
+                            </div>
+                        </div>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/pigeon/{{ father._id }}">
+                                <div class="card">
+                                    <img src="{{ father.image_url }}" class="card-img-top" alt="{{ father.name }}" style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ father.name }}</h5>
+                                        <p class="card-text">
+                                            <small class="text-muted">{{ father.band_id }}</small>
+                                        </p>
+                                        <p>Father</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/pigeon/{{ mother._id }}">
+                                <div class="card">
+                                    <img src="{{ mother.image_url }}" class="card-img-top" alt="{{ mother.name }}" style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ mother.name }}</h5>
+                                        <p class="card-text">
+                                            <small class="text-muted">{{ mother.band_id }}</small>
+                                        </p>
+                                        <p>Mother</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-        <button
-            class="btn btn-secondary btn-back"
-            onclick="window.location.href='/pigeon/{{ child._id }}'"
-        >
-            Back
-        </button>
+        <button class="btn btn-secondary btn-back" onclick="window.location.href='/pigeon/{{ child._id }}'">Back</button>
     </div>
-
 </div>
-
 {% endblock %}

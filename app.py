@@ -19,7 +19,7 @@ app.secret_key = str(os.getenv("SECRET_KEY"))
 app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL")).replace(
     "postgres://", "postgresql://"
 )
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
 
 app.app_context().push()
 
