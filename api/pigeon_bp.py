@@ -3,6 +3,7 @@ from typing import Final, Dict, Any
 from mimetypes import guess_type
 from io import BytesIO
 import uuid
+import datetime
 
 import requests
 from flask import (
@@ -15,7 +16,7 @@ from flask import (
     session,
 )
 
-from models import db, Pigeon
+from models import PigeonHierarchy, db, Pigeon
 
 pigeon_bp = Blueprint(
     "pigeon",
@@ -122,10 +123,13 @@ def detail(id):
 
     pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
     pigeon = pigeons.filter_by(_id=id).first()
-    cocks = pigeons.filter(Pigeon.sex == "cock", Pigeon._id != id).all()
-    hens = pigeons.filter(Pigeon.sex == "hen", Pigeon._id != id).all()
+
+    cocks = pigeons.filter(Pigeon.sex == "cock", Pigeon._id != id, Pigeon.date_of_birth < pigeon.date_of_birth).all()
+    hens = pigeons.filter(Pigeon.sex == "hen", Pigeon._id != id, Pigeon.date_of_birth < pigeon.date_of_birth).all()
+    pigeon_hierarchy = PigeonHierarchy.query.filter_by(child_id=id).first()
+
     return render_template(
-        "detail.html", pigeon=pigeon, cocks=cocks, hens=hens, session=session
+        "detail.html", pigeon=pigeon, cocks=cocks, hens=hens, session=session, pigeon_hierarchy=pigeon_hierarchy
     )
 
 

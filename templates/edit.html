@@ -1,17 +1,17 @@
 {% extends 'base.html' %} {% set active = "Register" %} {% block content %}
 <section class="vh-100 d-flex justify-content-center align-items-center">
-    <div class="card p-4 shadow" style="width: 100%; max-width: 450px">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 500px;">
         <h1 class="card-title mb-4 text-center">Edit Pigeon</h1>
 
         {% if error %}
         <div class="alert alert-danger" role="alert">{{ error }}</div>
         {% endif %}
-
         <img
-            src="{{ pigeon.image_url }}"
-            class="card-img mb-4"
-            alt="{{ pigeon.name }}"
-        />
+             src="{{ pigeon.image_url }}"
+             class="card-img-top img-fluid mb-4"
+             alt="{{ pigeon.name }}"
+             style="max-height: 350px; object-fit: contain; width: auto; margin: 0 auto;"
+         />
 
         <form method="post" action="/pigeon/edit/{{ pigeon._id }}" enctype="multipart/form-data">
             <div class="form-row">

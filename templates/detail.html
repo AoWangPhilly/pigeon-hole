@@ -1,275 +1,361 @@
 {% extends 'base.html' %} {% set active = "View" %} {% block content %}
-<div class="mt-5 text-center">
-    <h2 class="mb-5">Pigeon Hole</h2>
+<div class="container mt-5">
+    <h2 class="mb-5 text-center">Pigeon Hole</h2>
     {% if pigeon %}
-    <div class="card mb-3" style="max-width: 540px">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img
-                    src="{{ pigeon.image_url }}"
-                    class="card-img"
-                    alt="{{ pigeon.name }}"
-                />
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">{{ pigeon.name }}</h5>
-                    <p class="card-text">
-                        <small class="text-muted"
-                            >Band ID: {{ pigeon.band_id }}</small
-                        >
-                    </p>
-                    <p class="card-text">
-                        <small class="text-muted"
-                            >Color: {{ pigeon.color }}</small
-                        >
-                    </p>
-                    <p class="card-text">
-                        <small class="text-muted">Sex: {{ pigeon.sex }}</small>
-                    </p>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img
+                src="{{ pigeon.image_url }}"
+                class="img-fluid"
+                alt="{{ pigeon.name }}"
+                style="max-height: 350px; object-fit: contain; width: auto; margin: 0 auto;"
+            />
         </div>
-    </div>
-    <div class="row mb-5 mt-5">
-        <button
-            class="col btn btn-primary mr-2"
-            onclick="location.href='/hierarchy/view/{{pigeon._id}}'"
-        >
-            View Relationship
-        </button>
-        <button
-            class="col btn btn-secondary mr-2"
-            data-toggle="modal"
-            data-target="#exampleModal"
-        >
-            Add Parents
-        </button>
-        <button
-            class="col btn btn-info mr-2"
-            onclick="location.href='/pigeon/edit/{{pigeon._id}}'"
-        >
-            Edit
-        </button>
-        <button
-            class="col btn btn-danger"
-            data-toggle="modal"
-            data-target="#deleteModal"
-        >
-            Delete
-        </button>
-    </div>
-    <button
-        class="btn btn-secondary"
-        onclick="window.location.href='/pigeon/view'"
-    >
-        Back
-    </button>
+        <div class="col-md-8">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ pigeon.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Band ID</th>
+                        <td>{{ pigeon.band_id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Color</th>
+                        <td>{{ pigeon.color }}</td>
+                    </tr>
+                    <tr>
+                        <th>Sex</th>
+                        <td>{{ pigeon.sex }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row mb-5 mt-5">
+                {% if pigeon_hierarchy %}
+                <button
+                    class="col btn btn-primary mr-2"
+                    onclick="location.href='/hierarchy/view/{{pigeon._id}}'"
+                >
+                    View Relationship
+                </button>
+                {% else %}
+                <button
+                    class="col btn btn-primary mr-2"
+                    onclick="viewRelationship()"
+                >
+                    View Relationship
+                </button>
 
-    <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                        Add Parents
-                    </h5>
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <form method="POST" action="/hierarchy/add/{{pigeon._id}}">
-                        <div class="form-group">
-                            <div class="row">
-                                <!-- Father Selection Column -->
-                                <div
-                                    class="col justify-content-center text-center"
+                <!-- Modal -->
+                <div
+                    class="modal fade"
+                    id="warningModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="modalLabel"
+                    aria-hidden="true"
+                >
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel">
+                                    Relationship
+                                </h5>
+                                <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
                                 >
-                                    <label for="fatherSelect" class="form-label"
-                                        >Select Father</label
-                                    >
-                                    <div class="d-flex justify-content-center">
-                                        <div id="fatherCard" class="card" style="width: 18rem">
-                                            <img
-                                                id="cockImage"
-                                                src=""
-                                                class="card-img-top"
-                                                alt="Selected Cock"
-                                                style="
-                                                    height: 200px;
-                                                    object-fit: cover;
-                                                "
-                                            />
-                                            <div class="card-body">
-                                                <h5
-                                                    id="fatherName"
-                                                    class="card-title"
-                                                ></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <select
-                                        class="form-control mt-2"
-                                        id="fatherSelect"
-                                        name="father_id"
-                                        required
-                                    >
-                                        <option value="">
-                                            Select Band ID
-                                        </option>
-                                        {% for cock in cocks %}
-                                        <option value="{{ cock._id }}">
-                                            {{ cock.band_id }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                <!-- Mother Selection Column -->
-                                <div
-                                    class="col justify-content-center text-center"
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                No relationship found. Please add parents first.
+                            </div>
+                            <div class="modal-footer">
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
                                 >
-                                    <label for="motherSelect" class="form-label"
-                                        >Select Mother</label
-                                    >
-                                    <div class="d-flex justify-content-center">
-                                        <div id="motherCard" class="card" style="width: 18rem">
-                                            <img
-                                                id="henImage"
-                                                src=""
-                                                class="card-img-top"
-                                                alt="Selected Hen"
-                                                style="
-                                                    height: 200px;
-                                                    object-fit: cover;
-                                                "
-                                            />
-                                            <div class="card-body">
-                                                <h5
-                                                    id="motherName"
-                                                    class="card-title"
-                                                ></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <select
-                                        class="form-control mt-2"
-                                        id="motherSelect"
-                                        name="mother_id"
-                                        required
-                                    >
-                                        <option value="">
-                                            Select Band ID
-                                        </option>
-                                        {% for hen in hens %}
-                                        <option value="{{ hen._id }}">
-                                            {{ hen.band_id }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                                    Close
+                                </button>
                             </div>
                         </div>
-                        <!-- Include CSRF Token if necessary -->
-                        <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                            <button type="submit" value="Submit" class="btn btn-primary">
-                                Save changes
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">
-                        Delete {{ pigeon.name }}
-                    </h5>
+                {% endif %}
+
+                <button
+                    class="col btn btn-secondary mr-2"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                >
+                    Add Parents
+                </button>
+                <button
+                    class="col btn btn-info mr-2"
+                    onclick="location.href='/pigeon/edit/{{pigeon._id}}'"
+                >
+                    Edit
+                </button>
+                <button
+                    class="col btn btn-danger"
+                    data-toggle="modal"
+                    data-target="#deleteModal"
+                >
+                    Delete
+                </button>
+            </div>
+            <div class="container mb-3 mt-5">
+                <div class="d-flex justify-content-center">
                     <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
+                        class="btn btn-secondary"
+                        onclick="window.location.href='/pigeon/view'"
                     >
-                        <span aria-hidden="true">&times;</span>
+                        Back
                     </button>
                 </div>
+            </div>
 
-                <div class="modal-body">
-                    Are you sure you want to delete {{ pigeon.name }}?
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                        >
-                            Close
-                        </button>
-                        <button
-                            type="submit"
-                            class="btn btn-danger"
-                            onclick="window.location.href='/pigeon/delete/{{ pigeon._id }}'"
-                        >
-                            Delete
-                        </button>
+            <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Add Parents
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form
+                                method="POST"
+                                action="/hierarchy/add/{{pigeon._id}}"
+                            >
+                                <div class="form-group">
+                                    <div class="row">
+                                        <!-- Father Selection Column -->
+                                        <div
+                                            class="col justify-content-center text-center"
+                                        >
+                                            <label
+                                                for="fatherSelect"
+                                                class="form-label"
+                                                >Select Father</label
+                                            >
+                                            <div
+                                                class="d-flex justify-content-center"
+                                            >
+                                                <div
+                                                    id="fatherCard"
+                                                    class="card"
+                                                    style="width: 18rem"
+                                                >
+                                                    <img
+                                                        id="cockImage"
+                                                        src=""
+                                                        class="card-img-top"
+                                                        alt="Selected Cock"
+                                                        style="
+                                                            height: 200px;
+                                                            object-fit: cover;
+                                                        "
+                                                    />
+                                                    <div class="card-body">
+                                                        <h5
+                                                            id="fatherName"
+                                                            class="card-title"
+                                                        ></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <select
+                                                class="form-control mt-2"
+                                                id="fatherSelect"
+                                                name="father_id"
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select Band ID
+                                                </option>
+                                                {% for cock in cocks %}
+                                                <option value="{{ cock._id }}">
+                                                    {{ cock.band_id }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <!-- Mother Selection Column -->
+                                        <div
+                                            class="col justify-content-center text-center"
+                                        >
+                                            <label
+                                                for="motherSelect"
+                                                class="form-label"
+                                                >Select Mother</label
+                                            >
+                                            <div
+                                                class="d-flex justify-content-center"
+                                            >
+                                                <div
+                                                    id="motherCard"
+                                                    class="card"
+                                                    style="width: 18rem"
+                                                >
+                                                    <img
+                                                        id="henImage"
+                                                        src=""
+                                                        class="card-img-top"
+                                                        alt="Selected Hen"
+                                                        style="
+                                                            height: 200px;
+                                                            object-fit: cover;
+                                                        "
+                                                    />
+                                                    <div class="card-body">
+                                                        <h5
+                                                            id="motherName"
+                                                            class="card-title"
+                                                        ></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <select
+                                                class="form-control mt-2"
+                                                id="motherSelect"
+                                                name="mother_id"
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select Band ID
+                                                </option>
+                                                {% for hen in hens %}
+                                                <option value="{{ hen._id }}">
+                                                    {{ hen.band_id }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Include CSRF Token if necessary -->
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-dismiss="modal"
+                                    >
+                                        Close
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        value="Submit"
+                                        class="btn btn-primary"
+                                    >
+                                        Save changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div
+                class="modal fade"
+                id="deleteModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="deleteModalLabel"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">
+                                Delete {{ pigeon.name }}
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            Are you sure you want to delete {{ pigeon.name }}?
+                            <div class="modal-footer mt-">
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
+                                    onclick="window.location.href='/pigeon/delete/{{ pigeon._id }}'"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function updateFatherSelect(pigeonId) {
+                  // Fetch the current father and mother selected for the pigeon
+                  $.get(`/hierarchy/get/${pigeonId}`, (data) => {
+                    // if API failed
+
+                      console.log(data);
+                      // Directly set the value of the father and mother <select> elements
+                      $("#fatherSelect").val(data.father_id);
+                      $("#motherSelect").val(data.mother_id);
+
+                      // Optionally, trigger change event if you have attached handlers that need to react to this
+                      $("#fatherSelect").change();
+                      $("#motherSelect").change();
+                  });
+                }
+                function viewRelationship() {
+                    // Show the modal
+                    $('#warningModal').modal('show');
+                }
+
+                updateFatherSelect({{ pigeon._id }});
+            </script>
+
+            {% endif %}
         </div>
+
+        {% endblock %} {% block scripts %}
+        <script src="{{ url_for('static', filename='js/image_select.js') }}"></script>
+        {% endblock %}
     </div>
-    <script>
-        function updateFatherSelect(pigeonId) {
-          // Fetch the current father and mother selected for the pigeon
-          $.get(`/hierarchy/get/${pigeonId}`, (data) => {
-            // if API failed
-
-              console.log(data);
-              // Directly set the value of the father and mother <select> elements
-              $("#fatherSelect").val(data.father_id);
-              $("#motherSelect").val(data.mother_id);
-
-              // Optionally, trigger change event if you have attached handlers that need to react to this
-              $("#fatherSelect").change();
-              $("#motherSelect").change();
-          });
-        }
-        updateFatherSelect({{ pigeon._id }});
-    </script>
-
-    {% endif %}
 </div>
-
-{% endblock %} {% block scripts %}
-<script src="{{ url_for('static', filename='js/image_select.js') }}"></script>
-{% endblock %}
