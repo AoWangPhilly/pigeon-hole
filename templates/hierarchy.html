@@ -1,12 +1,53 @@
 {% extends 'base.html' %} {% set active = "View" %} {% block content %}
 <div class="mt-5 text-center">
     <h2 class="mb-5">Pigeon Hole</h2>
-    <button
-        class="btn btn-secondary"
-        onclick="window.location.href='/pigeon/{{ pigeon_hierarchy.child_id }}'"
-    >
-        Back
-    </button>
+    <div class="content-container">
+        <div class="tree">
+	<ul>
+		<li>
+			<a href="#">Parent</a>
+			<ul>
+				<li>
+					<a href="#">Child</a>
+					<ul>
+						<li>
+							<a href="#">Grand Child</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">Child</a>
+					<ul>
+						<li><a href="#">Grand Child</a></li>
+						<li>
+							<a href="#">Grand Child</a>
+							<ul>
+								<li>
+									<a href="#">Great Grand Child</a>
+								</li>
+								<li>
+									<a href="#">Great Grand Child</a>
+								</li>
+								<li>
+									<a href="#">Great Grand Child</a>
+								</li>
+							</ul>
+						</li>
+						<li><a href="#">Grand Child</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+        </div>
+        <button
+            class="btn btn-secondary btn-back"
+            onclick="window.location.href='/pigeon/{{ pigeon_hierarchy.child_id }}'"
+        >
+            Back
+        </button>
+    </div>
+
 </div>
 
 {% endblock %}

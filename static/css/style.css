@@ -112,3 +112,20 @@ right connector from last child*/
 .tree li a:hover+ul ul::before{
 	border-color:  #94a0b4;
 }
+
+.content-container {
+    display: flex; /* Use flexbox to layout children */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically, if needed */
+    text-align: left; /* Reset text alignment for the tree */
+}
+
+.tree ul {
+    text-align: center; /* Center the tree structure */
+}
+
+.btn-back {
+    margin-top: 20px; /* Add some space above the back button */
+    align-self: center; /* Center the button, if the parent is a flex container */
+}
