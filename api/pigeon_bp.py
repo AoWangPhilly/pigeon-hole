@@ -65,12 +65,12 @@ def view():
         page = db.paginate(
             Pigeon.query.filter_by(user_id=session.get("user").get("_id")).filter(
                 Pigeon.name.icontains(nameFilter),
-            ),
+            ).order_by(Pigeon.name),
             per_page=6
         )
     else:
         page = db.paginate(
-            Pigeon.query.filter_by(user_id=session.get("user").get("_id")),
+            Pigeon.query.filter_by(user_id=session.get("user").get("_id")).order_by(Pigeon.name),
             per_page=6
         )
     return render_template(
