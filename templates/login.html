@@ -3,39 +3,32 @@
     <div class="card p-4 shadow-sm" style="width: 100%; max-width: 650px">
         <h1 class="card-title mb-4 text-center">Login</h1>
         <p class="text-center">Welcome back! Please login to your account.</p>
-        {% if error %}
-        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% if form.errors %}
+            <ul class="errors">
+                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                    {% for error in field_errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
         {% endif %}
+
         <form method="POST" action="/auth/login">
-            <div class="row mb-3">
-                <label for="inputEmail" class="col-sm-2 col-form-label"
-                    >Email</label
-                >
+            {{ form.csrf_token }}
+            <div class="form-group row mb-3">
+                <div class="col-sm-2">
+                    {{ form.email.label }}
+                </div>
                 <div class="col-sm-10">
-                    <input
-                        type="email"
-                        class="form-control"
-                        id="inputEmail"
-                        placeholder="Email"
-                        name="email"
-                        aria-describedby="emailHelp"
-                        required
-                    />
+                    {{ form.email(class="form-control", placeholder="Email") }}
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="inputPassword" class="col-sm-2 col-form-label"
-                    >Password</label
-                >
+                <div class="col-sm-2">
+                    {{ form.password.label }}
+                </div>
                 <div class="col-sm-10">
-                    <input
-                        type="password"
-                        class="form-control"
-                        id="inputPassword"
-                        name="password"
-                        placeholder="Password"
-                        required
-                    />
+                    {{ form.password(class="form-control", placeholder="Password") }}
                 </div>
             </div>
             <div class="row mb-3">

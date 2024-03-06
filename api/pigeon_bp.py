@@ -63,7 +63,6 @@ def view():
     if session.get("user") is None:
         return redirect(url_for("auth.login"))
 
-
     nameFilter = request.args.get("name")
     if nameFilter:
         page = db.paginate(
@@ -81,7 +80,9 @@ def view():
             ),
             per_page=6,
         )
-    is_empty = Pigeon.query.filter_by(user_id=session.get("user").get("_id")).first() is None
+    is_empty = (
+        Pigeon.query.filter_by(user_id=session.get("user").get("_id")).first() is None
+    )
     return render_template(
         "view.html",
         is_empty=is_empty,

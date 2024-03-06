@@ -9,7 +9,8 @@
                 <li>
                     <a href="/pigeon/{{ child._id }}">
                         <div class="card">
-                            <img src="{{ child.image_url }}" class="card-img-top" alt="{{ child.name }}" style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
+                            <img src="{{ child.image_url }}" class="card-img-top" alt="{{ child.name }}"
+                                style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
                             <div class="card-body">
                                 <h5 class="card-title">{{ child.name }}</h5>
                                 <p class="card-text">
@@ -26,7 +27,8 @@
                         <li>
                             <a href="/pigeon/{{ father._id }}">
                                 <div class="card">
-                                    <img src="{{ father.image_url }}" class="card-img-top" alt="{{ father.name }}" style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
+                                    <img src="{{ father.image_url }}" class="card-img-top" alt="{{ father.name }}"
+                                        style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ father.name }}</h5>
                                         <p class="card-text">
@@ -40,7 +42,8 @@
                         <li>
                             <a href="/pigeon/{{ mother._id }}">
                                 <div class="card">
-                                    <img src="{{ mother.image_url }}" class="card-img-top" alt="{{ mother.name }}" style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
+                                    <img src="{{ mother.image_url }}" class="card-img-top" alt="{{ mother.name }}"
+                                        style="max-height: 150px; object-fit: contain; width: auto; margin: 0 auto;">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ mother.name }}</h5>
                                         <p class="card-text">
@@ -55,7 +58,8 @@
                 </li>
             </ul>
         </div>
-        <button class="btn btn-secondary btn-back" onclick="window.location.href='/pigeon/{{ child._id }}'">Back</button>
+        <button class="btn btn-secondary btn-back"
+            onclick="window.location.href='/pigeon/{{ child._id }}'">Back</button>
     </div>
 </div>
 {% endblock %}

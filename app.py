@@ -7,6 +7,7 @@ from api.about_bp import about_bp
 from api.auth_bp import auth_bp
 from api.pigeon_bp import pigeon_bp
 from api.hierarchy_bp import hierarchy_bp
+from cache import cache
 
 from dotenv import load_dotenv
 
@@ -20,6 +21,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL")).replace(
     "postgres://", "postgresql://"
 )
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
+
+cache.init_app(app, config={
+    "CACHE_TYPE": "FileSystemCache",
+    "CACHE_DIR": "cache",
+    "CACHE_THRESHOLD": 100_000
+})
 
 app.app_context().push()
 

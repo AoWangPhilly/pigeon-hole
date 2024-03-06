@@ -1,7 +1,8 @@
 Flask==3.0.0
-Flask-WTF==1.2.1
+wtforms[email]
 Flask-Bcrypt==1.0.1
 Flask-SQLAlchemy==3.1.1
+Flask-Caching
 passlib
 python-dotenv
 psycopg2-binary
