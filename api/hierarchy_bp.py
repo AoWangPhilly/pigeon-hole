@@ -13,7 +13,7 @@ from flask import (
     redirect,
     url_for,
     session,
-    flash
+    flash,
 )
 from requests.sessions import Session
 

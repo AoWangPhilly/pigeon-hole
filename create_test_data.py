@@ -16,7 +16,6 @@ from app import app
 app.app_context().push()
 
 
-
 def generate_random_letters():
     return "".join(random.choices(string.ascii_uppercase, k=3))
 

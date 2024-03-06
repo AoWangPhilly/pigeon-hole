@@ -191,7 +191,7 @@ def edit(id):
 
         pigeon.band_id = band_id
         pigeon.name = form.name.data
-        pigeon.sex =  form.sex.data
+        pigeon.sex = form.sex.data
         pigeon.color = form.color.data
         pigeon.date_of_birth = form.date_of_birth.data
 

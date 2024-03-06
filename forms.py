@@ -1,3 +1,5 @@
+import datetime
+
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField,
@@ -199,6 +201,37 @@ class AddPigeonForm(PigeonForm):
 
 
 class EditPigeonForm(PigeonForm):
+    def validate_sex(self, sex):
+        pigeon = Pigeon.query.filter_by(band_id=self.band_id.data).first()
+        if pigeon:
+            if pigeon.sex == "cock":
+                hierarchy = PigeonHierarchy.query.filter_by(
+                    father_id=pigeon._id
+                ).first()
+            else:
+                hierarchy = PigeonHierarchy.query.filter_by(
+                    mother_id=pigeon._id
+                ).first()
+
+            if hierarchy:
+                child_pigeon = Pigeon.query.filter_by(_id=hierarchy.child_id).first()
+
+                if pigeon.sex == "cock" and sex.data == "hen":
+                    print("invalid mother")
+                    raise ValidationError(
+                        Markup(
+                            f"Pigeon is already father to <a href='/pigeon/{child_pigeon._id}'>{child_pigeon.band_id}</a>"
+                        )
+                    )
+                elif pigeon.sex == "hen" and sex.data == "cock":
+                    print("invalid father")
+
+                    raise ValidationError(
+                        Markup(
+                            f"Pigeon is already mother to <a href='/pigeon/{child_pigeon._id}'>{child_pigeon.band_id}</a>"
+                        )
+                    )
+
     def validate_band_id(self, band_id):
         try:
             organization, year, club, band = band_id.data.split("-")
@@ -239,34 +272,3 @@ class EditPigeonForm(PigeonForm):
             ),
         ],
     )
-
-    def validate_sex(self, sex):
-        pigeon = Pigeon.query.filter_by(band_id=self.band_id.data).first()
-        if pigeon:
-            if pigeon.sex == "cock":
-                hierarchy = PigeonHierarchy.query.filter_by(
-                    father_id=pigeon._id
-                ).first()
-            else:
-                hierarchy = PigeonHierarchy.query.filter_by(
-                    mother_id=pigeon._id
-                ).first()
-
-            if hierarchy:
-                child_pigeon = Pigeon.query.filter_by(_id=hierarchy.child_id).first()
-
-                if pigeon.sex == "cock" and sex.data == "hen":
-                    print("invalid mother")
-                    raise ValidationError(
-                        Markup(
-                            f"Pigeon is already father to <a href='/pigeon/{child_pigeon._id}'>{child_pigeon.band_id}</a>"
-                        )
-                    )
-                elif pigeon.sex == "hen" and sex.data == "cock":
-                    print("invalid father")
-
-                    raise ValidationError(
-                        Markup(
-                            f"Pigeon is already mother to <a href='/pigeon/{child_pigeon._id}'>{child_pigeon.band_id}</a>"
-                        )
-                    )
