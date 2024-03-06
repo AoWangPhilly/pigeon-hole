@@ -95,6 +95,9 @@ def view():
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
 def add():
+    if session.get("user") is None:
+        return redirect(url_for("auth.login"))
+
     form = AddPigeonForm()
     if request.method == "POST" and form.validate_on_submit():
         user_id = session.get("user").get("_id")
@@ -128,7 +131,7 @@ def add():
 
 @pigeon_bp.route("/<id>")
 def detail(id):
-    if not session.get("user"):
+    if session.get("user") is None:
         return redirect(url_for("auth.login"))
 
     pigeons = Pigeon.query.filter_by(user_id=session.get("user").get("_id"))
@@ -158,6 +161,9 @@ def detail(id):
 
 @pigeon_bp.route("/delete/<id>")
 def delete(id):
+    if session.get("user") is None:
+        return redirect(url_for("auth.login"))
+
     pigeon = Pigeon.query.filter_by(_id=id).first()
     db.session.delete(pigeon)
     db.session.commit()
@@ -166,15 +172,14 @@ def delete(id):
 
 @pigeon_bp.route("/edit/<id>", methods=["GET", "POST"])
 def edit(id):
+    if session.get("user") is None:
+        return redirect(url_for("auth.login"))
+
     pigeon = Pigeon.query.filter_by(_id=id).first()
     form = EditPigeonForm()
-    print("HI GET")
     if request.method == "POST" and form.validate_on_submit():
-        print("HI POST")
-
         user_id = session.get("user").get("_id")
         image_data = form.image.data
-        print(image_data)
         band_id = form.band_id.data
 
         pigeon.band_id = band_id
