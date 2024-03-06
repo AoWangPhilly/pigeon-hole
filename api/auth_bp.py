@@ -5,14 +5,12 @@ from flask import (
     redirect,
     request,
     jsonify,
-    url_for,
-    flash,
 )
+from passlib.hash import pbkdf2_sha256
 
 from models import User, db
 from forms import RegisterForm, LoginForm
 
-from passlib.hash import pbkdf2_sha256
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -51,6 +49,7 @@ def login():
         session["user"] = user
         return redirect("/"), 302
     return render_template("login.html", form=form), 200
+
 
 @auth_bp.route("/get-user")
 def get_users():

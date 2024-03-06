@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask, session
+from dotenv import load_dotenv
+from flask import Flask
 
 from api.home_bp import home_bp
 from api.about_bp import about_bp
@@ -8,10 +9,8 @@ from api.auth_bp import auth_bp
 from api.pigeon_bp import pigeon_bp
 from api.hierarchy_bp import hierarchy_bp
 from cache import cache
+from models import db
 
-from dotenv import load_dotenv
-
-from models import db, User
 
 load_dotenv()
 app = Flask(__name__, static_folder="static", template_folder="templates")
@@ -22,11 +21,14 @@ app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL")).replace(
 )
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
 
-cache.init_app(app, config={
-    "CACHE_TYPE": "FileSystemCache",
-    "CACHE_DIR": "cache",
-    "CACHE_THRESHOLD": 100_000
-})
+cache.init_app(
+    app,
+    config={
+        "CACHE_TYPE": "FileSystemCache",
+        "CACHE_DIR": "cache",
+        "CACHE_THRESHOLD": 100_000,
+    },
+)
 
 app.app_context().push()
 

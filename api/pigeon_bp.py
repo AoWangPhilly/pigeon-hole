@@ -17,6 +17,7 @@ from flask import (
 )
 
 from models import PigeonHierarchy, db, Pigeon
+from forms import AddPigeonForm
 
 pigeon_bp = Blueprint(
     "pigeon",
@@ -94,42 +95,36 @@ def view():
 
 @pigeon_bp.route("/add", methods=["GET", "POST"])
 def add():
-    if request.method == "GET":
-        return render_template("add.html", session=session)
+    form = AddPigeonForm()
+    if request.method == "POST" and form.validate_on_submit():
+        user_id = session.get("user").get("_id")
+        band_id = form.band_id.data
+        name = form.name.data
+        sex = form.sex.data
+        color = form.color.data
+        date_of_birth = form.date_of_birth.data
+        image_data = form.image.data
 
-    user_id = session.get("user").get("_id")
-    band_id = request.form.get("bandID")
-    name = request.form.get("name")
-    sex = request.form.get("sex")
-    color = request.form.get("color")
-    date_of_birth = request.form.get("dateOfBirth")
-    image_data = request.files["image"]
-
-    band_id_exist = Pigeon.query.filter_by(band_id=band_id).first()
-    if band_id_exist:
-        return render_template(
-            "add.html", session=session, error="Band ID already exists"
+        blob_storage_response = save_image_to_blob_storage(
+            image_data=image_data.read(),
+            file_name=image_data.filename,
+            blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
         )
+        url = blob_storage_response.get("url")
+        pigeon = Pigeon(
+            user_id=user_id,
+            band_id=band_id,
+            name=name,
+            sex=sex,
+            color=color,
+            date_of_birth=date_of_birth,
+            image_url=url,
+        )
+        db.session.add(pigeon)
+        db.session.commit()
 
-    blob_storage_response = save_image_to_blob_storage(
-        image_data=image_data.read(),
-        file_name=image_data.filename,
-        blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
-    )
-    url = blob_storage_response.get("url")
-    pigeon = Pigeon(
-        user_id=user_id,
-        band_id=band_id,
-        name=name,
-        sex=sex,
-        color=color,
-        date_of_birth=date_of_birth,
-        image_url=url,
-    )
-    db.session.add(pigeon)
-    db.session.commit()
-
-    return redirect(url_for("pigeon.view"))
+        return redirect(url_for("pigeon.view"))
+    return render_template("add.html", session=session, form=form)
 
 
 @pigeon_bp.route("/<id>")

@@ -7,6 +7,7 @@ import random
 import string
 import datetime
 from models import db, Pigeon, User, PigeonHierarchy
+from constants import VERCEL_API_URL, NATIONAL_ORG, COLORS, SEX
 
 from passlib.hash import pbkdf2_sha256
 
@@ -14,23 +15,6 @@ from app import app
 
 app.app_context().push()
 
-VERCEL_API_URL: Final[str] = "https://blob.vercel-storage.com"
-NATIONAL_ORG: Final[List[str]] = ["IF", "AU", "ATB", "NBRC", "IPB"]
-COLORS: Final[List[str]] = [
-    "blue",
-    "black",
-    "red",
-    "yellow",
-    "white",
-    "checker",
-    "barred",
-    "pied",
-    "grizzle",
-    "t-pattern",
-    "dun",
-    "mealy",
-]
-SEX: Final[List[str]] = ["hen", "cock"]
 
 
 def generate_random_letters():

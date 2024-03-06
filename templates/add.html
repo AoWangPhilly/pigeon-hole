@@ -3,107 +3,52 @@
     <div class="card p-4 shadow" style="width: 100%; max-width: 450px">
         <h1 class="card-title mb-4 text-center">Add Pigeon</h1>
 
-        {% if error %}
-        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% if form.errors %}
+            <ul class="errors">
+                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                    {% for error in field_errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
         {% endif %}
 
         <form method="post" action="/pigeon/add" enctype="multipart/form-data">
+            {{ form.csrf_token }}
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="bandId">Band ID</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="bandId"
-                        name="bandID"
-                        placeholder="Band ID"
-                        required
-                    />
+                    {{ form.band_id.label }}
+                    {{ form.band_id(class="form-control", placeholder="Band ID")}}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputName2">Name</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="inputName2"
-                        placeholder="Name"
-                        name="name"
-                        required
-                    />
+                    {{ form.name.label }}
+                    {{ form.name(class="form-control", placeholder="Name")}}
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>Sex</label>
-                    <div class="form-check">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="sex"
-                            id="gridRadios1"
-                            value="cock"
-                            checked
-                        />
-                        <label class="form-check-label" for="gridRadios1"
-                            >Cock</label
-                        >
-                    </div>
-                    <div class="form-check">
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            name="sex"
-                            id="gridRadios2"
-                            value="hen"
-                        />
-                        <label class="form-check-label" for="gridRadios2"
-                            >Hen</label
-                        >
-                    </div>
+                    {{ form.sex.label }}
+                    {% for subfield in form.sex %}
+                        <div class="form-check">
+                            <td>{{ subfield(class="form-check-input") }}</td>
+
+                            <td>{{ subfield.label(class="form-check-label") }}</td>
+                        </tr>
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inlineFormCustomSelect">Color</label>
-                    <select
-                        class="custom-select mr-sm-2"
-                        id="inlineFormCustomSelect"
-                        name="color"
-                    >
-                        <option selected>Choose color</option>
-                        <option value="blue">Blue</option>
-                        <option value="black">Black</option>
-                        <option value="red">Red</option>
-                        <option value="yellow">Yellow</option>
-                        <option value="white">White</option>
-                        <option value="checker">Checker</option>
-                        <option value="barred">Barred</option>
-                        <option value="pied">Pied</option>
-                        <option value="grizzle">Grizzle</option>
-                        <option value="t-pattern">T-pattern</option>
-                        <option value="dun">Dun</option>
-                        <option value="mealy">Mealy</option>
-                    </select>
+                    {{ form.color.label }}
+                    {{ form.color(class="custom-select mr-sm-2", id="inlineFormCustomSelect") }}
                 </div>
             </div>
             <div class="form-group">
-                <label for="dateOfBirth">Date of Birth</label>
-                <div>
-                    <input
-                        class="form-control"
-                        type="date"
-                        id="dateOfBirth"
-                        name="dateOfBirth"
-                    />
-                </div>
+                {{ form.date_of_birth.label }}
+                {{ form.date_of_birth(class="form-control") }}
             </div>
             <div class="form-group">
-                <label for="avatar" class="form-label">Upload Image</label>
-                <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    accept="image/png, image/jpeg"
-                    required
-                />
+                {{ form.image.label }}
+                {{ form.image(class="form-control-file") }}
             </div>
 
             <button type="submit" class="btn btn-primary">Add</button>
