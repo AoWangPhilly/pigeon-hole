@@ -169,7 +169,9 @@ class AddPigeonForm(PigeonForm):
             organization, year, club, band = band_id.data.split("-")
         except ValueError:
             raise ValidationError(
-                "Invalid band ID format, please use the format: <organization>-<year>-<club>-<band>"
+                Markup(
+                    "Invalid band ID format, please use the format: <strong>organization</strong>-<strong>year</strong>-<strong>club-band</strong>. Learn more <a href='https://www.pigeon.org/pages/lostbirdinfo.html'>here</a>."
+                )
             )
 
         if organization not in NATIONAL_ORG:
@@ -237,7 +239,9 @@ class EditPigeonForm(PigeonForm):
             organization, year, club, band = band_id.data.split("-")
         except ValueError:
             raise ValidationError(
-                "Invalid band ID format, please use the format: <organization>-<year>-<club>-<band>"
+                Markup(
+                    "Invalid band ID format, please use the format: <strong>organization</strong>-<strong>year</strong>-<strong>club-band</strong>. Learn more <a href='https://www.pigeon.org/pages/lostbirdinfo.html'>here</a>."
+                )
             )
 
         if organization not in NATIONAL_ORG:
