@@ -206,6 +206,7 @@ def edit(id):
             pigeon.image_url = url
 
         db.session.commit()
+        flash(f"{pigeon.name} has been updated successfully", "success")
         return redirect(url_for("pigeon.detail", id=id))
 
     form.color.data = pigeon.color

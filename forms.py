@@ -255,13 +255,16 @@ class EditPigeonForm(PigeonForm):
             if hierarchy:
                 child_pigeon = Pigeon.query.filter_by(_id=hierarchy.child_id).first()
 
-                if pigeon.sex == "cock" and sex == "hen":
+                if pigeon.sex == "cock" and sex.data == "hen":
+                    print("invalid mother")
                     raise ValidationError(
                         Markup(
                             f"Pigeon is already father to <a href='/pigeon/{child_pigeon._id}'>{child_pigeon.band_id}</a>"
                         )
                     )
-                else:
+                elif pigeon.sex == "hen" and sex.data == "cock":
+                    print("invalid father")
+
                     raise ValidationError(
                         Markup(
                             f"Pigeon is already mother to <a href='/pigeon/{child_pigeon._id}'>{child_pigeon.band_id}</a>"

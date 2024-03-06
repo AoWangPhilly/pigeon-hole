@@ -13,6 +13,7 @@ from flask import (
     redirect,
     url_for,
     session,
+    flash
 )
 from requests.sessions import Session
 
@@ -52,6 +53,7 @@ def add(id: str):
         )
         db.session.add(pigeon)
         db.session.commit()
+    flash("Pigeon hierarchy added successfully", "success")
     return redirect(url_for("pigeon.detail", id=id))
 
 
