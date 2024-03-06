@@ -20,7 +20,7 @@ from wtforms.validators import (
 
 from passlib.hash import pbkdf2_sha256
 
-from models import User, Pigeon
+from models import User, Pigeon, PigeonHierarchy
 from constants import NATIONAL_ORG
 
 
@@ -99,8 +99,7 @@ class LoginForm(FlaskForm):
         if user and not pbkdf2_sha256.verify(password.data, user.password):
             raise ValidationError("Invalid password")
 
-
-class AddPigeonForm(FlaskForm):
+class PigeonForm(FlaskForm):
     band_id = StringField(
         "Band ID",
         validators=[
@@ -159,6 +158,7 @@ class AddPigeonForm(FlaskForm):
         ],
     )
 
+class AddPigeonForm(PigeonForm):
     def validate_band_id(self, band_id):
         try:
             organization, year, club, band = band_id.data.split("-")
@@ -193,3 +193,62 @@ class AddPigeonForm(FlaskForm):
         pigeon = Pigeon.query.filter_by(band_id=band_id.data).first()
         if pigeon:
             raise ValidationError("Band ID already in use")
+
+
+class EditPigeonForm(PigeonForm):
+    def validate_band_id(self, band_id):
+        try:
+            organization, year, club, band = band_id.data.split("-")
+        except ValueError:
+            raise ValidationError(
+                "Invalid band ID format, please use the format: <organization>-<year>-<club>-<band>"
+            )
+
+        if organization not in NATIONAL_ORG:
+            raise ValidationError(
+                f"Invalid organization, please use one of the following: {', '.join(NATIONAL_ORG)} in band ID"
+            )
+
+        if len(year) != 4:
+            raise ValidationError(
+                "Invalid year format, please use a 4-digit year in band ID"
+            )
+
+        if year != self.date_of_birth.data.strftime("%Y"):
+            raise ValidationError("Year in band ID does not match date of birth")
+
+        if len(club) != 3:
+            raise ValidationError(
+                "Invalid club format, please use a 3-letter club code in band ID"
+            )
+
+        if len(band) != 7:
+            raise ValidationError(
+                "Invalid band format, please use a 7-digit band number in band ID"
+            )
+
+
+    image = FileField(
+        "Upload Image",
+        validators=[
+            FileAllowed(
+                ["jpg", "png", "jpeg", "gif", "webp", "svg", "avif"],
+                message="Incorrect file format. Please provide valid .jpg or .png images.",
+            ),
+        ],
+    )
+    def validate_sex(self, sex):
+        pigeon = Pigeon.query.filter_by(band_id=self.band_id.data).first()
+
+        if pigeon.sex == "cock":
+            hierarchy = PigeonHierarchy.query.filter_by(father_id=pigeon._id).first()
+        else:
+            hierarchy = PigeonHierarchy.query.filter_by(mother_id=pigeon._id).first()
+
+        if hierarchy:
+            child_pigeon = Pigeon.query.filter_by(_id=hierarchy.child_id).first()
+
+            if pigeon.sex == "cock" and sex == "hen":
+                raise ValidationError(f"Pigeon is already father to {child_pigeon.band_id}")
+            else:
+                raise ValidationError(f"Pigeon is already mother to {child_pigeon.band_id}")

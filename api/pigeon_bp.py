@@ -17,7 +17,7 @@ from flask import (
 )
 
 from models import PigeonHierarchy, db, Pigeon
-from forms import AddPigeonForm
+from forms import AddPigeonForm, EditPigeonForm
 
 pigeon_bp = Blueprint(
     "pigeon",
@@ -122,7 +122,6 @@ def add():
         )
         db.session.add(pigeon)
         db.session.commit()
-
         return redirect(url_for("pigeon.view"))
     return render_template("add.html", session=session, form=form)
 
@@ -167,62 +166,36 @@ def delete(id):
 
 @pigeon_bp.route("/edit/<id>", methods=["GET", "POST"])
 def edit(id):
-    if request.method == "GET":
-        pigeon = Pigeon.query.filter_by(_id=id).first()
-        return render_template("edit.html", pigeon=pigeon)
-
     pigeon = Pigeon.query.filter_by(_id=id).first()
-    user_id = session.get("user").get("_id")
-    band_id = request.form.get("bandID")
-    name = request.form.get("name")
-    sex = request.form.get("sex")
-    color = request.form.get("color")
-    date_of_birth = request.form.get("dateOfBirth")
-    image_data = request.files["image"]
+    form = EditPigeonForm()
+    print("HI GET")
+    if request.method == "POST" and form.validate_on_submit():
+        print("HI POST")
 
-    if pigeon.sex == "cock":
-        hierarchy = PigeonHierarchy.query.filter_by(father_id=id).first()
-    else:
-        hierarchy = PigeonHierarchy.query.filter_by(mother_id=id).first()
-    child_pigeon = Pigeon.query.filter_by(_id=hierarchy.child_id).first()
+        user_id = session.get("user").get("_id")
+        image_data = form.image.data
+        print(image_data)
+        band_id = form.band_id.data
 
-    if hierarchy and pigeon.sex == "cock" and sex == "hen":
-        return render_template(
-            "edit.html",
-            error=f"Pigeon is already father to {child_pigeon.band_id}",
-            pigeon=pigeon,
-        )
-    else:
-        return render_template(
-            "edit.html",
-            error=f"Pigeon is already mother to {child_pigeon.band_id}",
-            pigeon=pigeon,
-        )
+        pigeon.band_id = band_id
+        pigeon.name = form.name.data
+        pigeon.sex =  form.sex.data
+        pigeon.color = form.color.data
+        pigeon.date_of_birth = form.date_of_birth.data
 
-    pigeon.user_id = user_id
-    pigeon.band_id = band_id
-    pigeon.name = name
-    pigeon.sex = sex
-    pigeon.color = color
-    pigeon.date_of_birth = date_of_birth
+        if image_data:
+            blob_storage_response = save_image_to_blob_storage(
+                image_data=image_data.read(),
+                file_name=image_data.filename,
+                blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
+            )
+            url = blob_storage_response.get("url")
 
-    try:
+            pigeon.image_url = url
+
         db.session.commit()
-    except:
-        return (
-            render_template("edit.html", error="Band ID is not unique", pigeon=pigeon),
-            400,
-        )
+        return redirect(url_for("pigeon.detail", id=id))
 
-    if image_data:
-        blob_storage_response = save_image_to_blob_storage(
-            image_data=image_data.read(),
-            file_name=image_data.filename,
-            blob_file_name=f"pigeon_images/user={user_id}/band_id={band_id}/{uuid.uuid4()}.png",
-        )
-        url = blob_storage_response.get("url")
-
-        pigeon.image_url = url
-        db.session.commit()
-
-    return redirect(url_for("pigeon.detail", id=id))
+    form.color.data = pigeon.color
+    form.sex.data = pigeon.sex
+    return render_template("edit.html", pigeon=pigeon, form=form)
