@@ -23,13 +23,36 @@
 
 {% block content %}
 <div class="mt-5 text-center">
-    <h2 class="mb-5">Pigeon Hole</h2>
+    <h2 class="mb-4">Pigeon Hole</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+
     {% if not is_empty %}
-    <div class="row form-outline mb-5" data-mdb-input-init>
-        <input id="pigeonSearch" type="search" id="form1" class="form-control col-md-8 mr-2" placeholder="Search pigeon" aria-label="Search" value="{{ name }}" />
-        <button id="pigeonSearchButton" class="col-md btn btn-secondary mr-2">Search</button>
-        <button class="col-md btn btn-secondary" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
+    <div class="container">
+        <div class="row form-outline mb-4" data-mdb-input-init>
+            <div class="col-md-8">
+                <input id="pigeonSearch" type="search" class="form-control" placeholder="Search pigeon" aria-label="Search" value="{{ name }}" />
+            </div>
+            <div class="col-md-2">
+                <button id="pigeonSearchButton" class="btn btn-secondary btn-block">Search</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-secondary btn-block" onclick="window.location.href='/pigeon/add'">Add Pigeon</button>
+            </div>
+        </div>
     </div>
+
     <div class="row">
         {% for pigeon in page %}
         <div class="col-4 h-100">

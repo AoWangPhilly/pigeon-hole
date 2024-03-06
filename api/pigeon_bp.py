@@ -14,6 +14,7 @@ from flask import (
     redirect,
     url_for,
     session,
+    flash,
 )
 
 from models import PigeonHierarchy, db, Pigeon
@@ -125,6 +126,9 @@ def add():
         )
         db.session.add(pigeon)
         db.session.commit()
+
+        success_message = f"{name} has been added successfully"
+        flash(success_message, "success")
         return redirect(url_for("pigeon.view"))
     return render_template("add.html", session=session, form=form)
 
@@ -167,6 +171,9 @@ def delete(id):
     pigeon = Pigeon.query.filter_by(_id=id).first()
     db.session.delete(pigeon)
     db.session.commit()
+
+    delete_message = f"{pigeon.name} has successfully been removed."
+    flash(delete_message, "danger")
     return redirect(url_for("pigeon.view"))
 
 
