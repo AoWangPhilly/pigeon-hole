@@ -7,6 +7,7 @@ from flask import (
     jsonify,
 )
 from passlib.hash import pbkdf2_sha256
+from sqlalchemy.exc import SQLAlchemyError
 
 from models import User, db
 from forms import RegisterForm, LoginForm
@@ -26,15 +27,22 @@ def register():
     form = RegisterForm()
 
     if request.method == "POST" and form.validate_on_submit():
-        user = User(
-            email=form.email.data,
-            password=pbkdf2_sha256.hash(form.password.data),
-            name=f"{form.first_name.data} {form.last_name.data}",
-        )
-        db.session.add(user)
-        db.session.commit()
-        session["user"] = user
-        return redirect("/")
+        try:
+            user = User(
+                email=form.email.data,
+                password=pbkdf2_sha256.hash(form.password.data),
+                name=f"{form.first_name.data} {form.last_name.data}",
+            )
+            db.session.add(user)
+            db.session.commit()
+            session["user"] = user
+            return redirect("/")
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return render_template(
+                "register.html",
+                form=form,
+            )
     return render_template(
         "register.html",
         form=form,
