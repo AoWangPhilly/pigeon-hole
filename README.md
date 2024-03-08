@@ -1,28 +1,45 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+# Pigeon Hole
 
-# Flask + Vercel
+## Group Members:
 
-This example shows how to use Flask 3 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+- Brian Chen (bc844@drexel.edu)
+- Ao Wang (aw3338@drexel.edu)
 
-## Demo
+## User Description
 
-https://flask-python-template.vercel.app/
+Pigeon Hole is a dedicated platform for pigeon racers catering to professionals and passionate hobbyists. Users meticulously manage their racing pigeon fleet by inputting details such as band IDs, names, sexes, and birthdates. The application offers a visually rich pedigree generator to explore intricate family trees and racing achievements. Pigeon Hole addresses time constraints and organizational challenges, providing a user-friendly platform for streamlined data management and informed decision-making, ultimately optimizing racing outcomes.
 
-## How it Works
+## System Description
 
-This example uses the Web Server Gateway Interface (WSGI) with Flask to enable handling requests on Vercel with Serverless Functions.
+Pigeon Hole provides a user-friendly platform, empowering pigeon racers to manage their racing pigeon fleet meticulously. The application allows racers to input and organize detailed information for each bird, including band IDs, names, sexes, and dates of birth. With its visually rich pedigree generator, the app enables racers to explore the intricate family trees of their pigeons, showcasing lineage and racing achievements. This feature enhances understanding of each bird's genetic background, aiding in strategic breeding decisions for improved racing performance. Pigeon Hole is a comprehensive tool for enthusiasts, offering a convenient and insightful resource for managing and optimizing their pigeon racing experience.
 
-## Running Locally
+## Tech Stack
 
-```bash
-npm i -g vercel
-vercel dev
-```
+- User Interface:
+  - HTML
+  - CSS
+  - JavaScript
+  - jQuery
+- Styling/Interaction: Bootstrap
+- Web Framework: Flask
+- Database:
+  - Postgres
+  - Vercel Blob Storage
+- Data Validation:
+  - Flask-WTF
+- Deployment: Vercel (https://pigeon-hole-nu.vercel.app/)
 
-Your Flask application is now available at `http://localhost:3000`.
+## Plugins Used
 
-## One-Click Deploy
+Since we used Flask, there are many available plugins to the framework.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+- Flask WTF: Extension that integrates the WTForms library, which provides useful features for creating and handling forms in a simple way for a Flask web application.
+- Flask SQLAlchemy: Extension for Flask allowing support for SQLAlchemy an Object Relational Mapper (ORM) that gives application developers the full power and flexibility of SQL.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+## Run Application
+
+1. Create Python Environment using `python3 -m venv venv`
+2. Activate environment `source venv/bin/activate`
+3. Install libraries, `pip install -r requirements.txt`
+4. Follow directions in `env.example`
+5. Run program, `python3 app.py`
