@@ -19,8 +19,12 @@ app.secret_key = str(os.getenv("SECRET_KEY"))
 app.config["SQLALCHEMY_DATABASE_URI"] = str(os.getenv("POSTGRES_URL")).replace(
     "postgres://", "postgresql://"
 )
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
-
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_recycle": 500,
+    "pool_pre_ping": True,
+    "pool_size": 20,
+    "max_overflow": 30,
+}
 cache.init_app(
     app,
     config={
