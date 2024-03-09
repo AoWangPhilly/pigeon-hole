@@ -34,7 +34,15 @@ def register():
                 name=f"{form.first_name.data} {form.last_name.data}",
             )
             db.session.add(user)
-            db.session.commit()
+            try:
+                db.session.commit()
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                return render_template(
+                    "register.html",
+                    form=form,
+                )
+
             session["user"] = user
             return redirect("/")
         except SQLAlchemyError as e:

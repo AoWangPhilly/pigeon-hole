@@ -125,7 +125,12 @@ def add():
             image_url=url,
         )
         db.session.add(pigeon)
-        db.session.commit()
+
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return redirect(url_for("pigeon.add"))
 
         success_message = f"{name} has been added successfully"
         flash(success_message, "success")
@@ -170,7 +175,12 @@ def delete(id):
 
     pigeon = Pigeon.query.filter_by(_id=id).first()
     db.session.delete(pigeon)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return redirect(url_for("pigeon.view"))
 
     delete_message = f"{pigeon.name} has successfully been removed."
     flash(delete_message, "danger")
@@ -205,7 +215,12 @@ def edit(id):
 
             pigeon.image_url = url
 
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return redirect(url_for("pigeon.edit", id=id))
+
         flash(f"{pigeon.name} has been updated successfully", "success")
         return redirect(url_for("pigeon.detail", id=id))
 
